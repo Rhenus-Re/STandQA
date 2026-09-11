@@ -371,3 +371,4 @@ def test_tc_c_012_cli_end_to_end_scenario(tmp_path, monkeypatch):
     assert out, "CLI --ascii 未输出任何内容"
     assert len(out.splitlines()) == 15  # border=4: range(-4,25,2) → 15 行
     assert len(out.splitlines()[0]) == 29  # 21 + 4*2
+
