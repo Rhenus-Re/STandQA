@@ -530,11 +530,13 @@ class QRCode(Generic[GenericImage]):
             return self.modules
 
         width = len(self.modules) + self.border * 2
-        code = [[False] * width] * self.border
+        # 缺陷 B-02 修复：不要用 * 复制出同一个列表的多个引用，
+        # 否则上下边框的每一行都指向同一对象，修改一行会污染其他行。
+        code = [[False] * width for _ in range(self.border)]
         x_border = [False] * self.border
         for module in self.modules:
             code.append(x_border + cast(list[bool], module) + x_border)
-        code += [[False] * width] * self.border
+        code += [[False] * width for _ in range(self.border)]
 
         return code
 
