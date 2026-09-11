@@ -48,6 +48,13 @@ def _check_mask_pattern(mask_pattern):
         raise ValueError(f"Mask pattern should be in range(8) (got {mask_pattern})")
 
 
+def _check_error_correction(error_correction):
+    if error_correction not in (0, 1, 2, 3):
+        raise ValueError(
+            f"Invalid error correction level (was {error_correction}, expected 0 to 3)"
+        )
+
+
 def copy_2d_array(x):
     return [row[:] for row in x]
 
@@ -87,6 +94,7 @@ class QRCode(Generic[GenericImage]):
         _check_box_size(box_size)
         _check_border(border)
         self.error_correction = int(error_correction)
+        _check_error_correction(self.error_correction)
         self.box_size = int(box_size)
         # Spec says border should be at least four boxes wide, but allow for
         # any (e.g. for producing printable QR codes).
