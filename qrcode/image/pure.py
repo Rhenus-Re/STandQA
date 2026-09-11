@@ -25,9 +25,12 @@ class PyPNGImage(BaseImage):
         """
 
     def save(self, stream, kind=None):
+        self.check_kind(kind=kind)
         if isinstance(stream, str):
-            stream = open(stream, "wb")
-        self._img.write(stream, self.rows_iter())
+            with open(stream, "wb") as stream:
+                self._img.write(stream, self.rows_iter())
+        else:
+            self._img.write(stream, self.rows_iter())
 
     def rows_iter(self):
         yield from self.border_rows_iter()
