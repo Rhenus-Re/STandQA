@@ -86,7 +86,6 @@ class QRCode(Generic[GenericImage]):
     ):
         _check_box_size(box_size)
         _check_border(border)
-        self.version = version
         self.error_correction = int(error_correction)
         self.box_size = int(box_size)
         # Spec says border should be at least four boxes wide, but allow for
@@ -97,6 +96,9 @@ class QRCode(Generic[GenericImage]):
         if image_factory is not None:
             assert issubclass(image_factory, BaseImage)
         self.clear()
+        # 缺陷 B-01 修复：clear() 会复位自动适配的版本号，因此这里在
+        # clear() 之后再写入构造参数里的显式 version，避免被复位掉。
+        self.version = version
 
     @property
     def version(self) -> int:
@@ -128,6 +130,9 @@ class QRCode(Generic[GenericImage]):
         self.modules_count = 0
         self.data_cache = None
         self.data_list = []
+        # 缺陷 B-01 修复：清空数据的同时复位自动适配得到的版本号，
+        # 使对象复用后能重新 best_fit，而不是沿用上一次的过大版本。
+        self._version = None
 
     def add_data(self, data, optimize=20):
         """
