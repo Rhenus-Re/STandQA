@@ -276,6 +276,13 @@ class Polynomial:
         if difference < 0:
             return self
 
+        # A-02：零值数据块对应的多项式余数仍为零，不能计算 glog(0)。
+        if self[0] == 0:
+            num = list(self[1:])
+            if difference:
+                num.append(0)
+            return Polynomial(num, 0) % other
+
         ratio = glog(self[0]) - glog(other[0])
 
         num = [
