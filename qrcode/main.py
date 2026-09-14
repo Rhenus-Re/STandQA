@@ -119,6 +119,10 @@ class QRCode(Generic[GenericImage]):
         if value is not None:
             value = int(value)
             util.check_version(value)
+        # 缺陷 B-05 修复：编码缓存依赖版本的容量和纠错块配置；显式
+        # 切换版本后必须重新计算，否则新矩阵会映射旧版本的码字。
+        if value != self._version:
+            self.data_cache = None
         self._version = value
 
     @property
