@@ -295,6 +295,8 @@ class RSBlock(NamedTuple):
 
 
 def rs_blocks(version, error_correction):
+    if version < 1 or version > 40:
+        raise ValueError(f"Invalid version (was {version}, expected 1 to 40)")
     if error_correction not in RS_BLOCK_OFFSET:  # pragma: no cover
         raise Exception(
             "bad rs block @ version: %s / error_correction: %s"
