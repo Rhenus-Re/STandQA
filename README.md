@@ -179,16 +179,17 @@ python -m pytest tests/manual/test_encoding_ecc.py
 python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-report=xml
 ```
 
-修复 A-01 后，A 域测试为 13 个 pytest 项通过（对应 `TC-A-01` 至 `TC-A-12`，其中 TC-A-09 参数化 2 项）；与 B 基线人工测试合并后为 28 项通过。完整覆盖率结果为总覆盖率 51%、`base.py` 99%、`util.py` 96%；`coverage.xml` 为可再生输出，不提交至仓库。
+修复 A-01、A-02、A-03 后，A 域测试为 13 个 pytest 项通过（对应 `TC-A-01` 至 `TC-A-12`，其中 TC-A-09 参数化 2 项）；与 B 基线人工测试合并后为 28 项通过。完整覆盖率结果为总覆盖率 51%、`base.py` 98%、`util.py` 96%；`coverage.xml` 为可再生输出，不提交至仓库。
 
 ## 8. 成员 A 贡献索引（`member-a/encoding-correction`）
 
 | 项目 | 位置 | 状态 |
 |---|---|---|
 | 编码与纠错测试 | `tests/manual/test_encoding_ecc.py` | 12 个编号用例，待成员 A 独立审阅确认 |
-| A-01 回归与修复 | `qrcode/base.py`、`qrcode/util.py` | 已完成本地回归；待成员 C 实际交叉复现 |
+| A-01、A-02、A-03 回归与修复 | `qrcode/base.py`、`qrcode/main.py`、`qrcode/util.py` | 已完成本地回归；待成员 C 实际交叉复现 |
 | 测试用例清单 | `reports/module1/M1-成员A-编码与纠错-测试用例清单.xlsx` | 已生成 |
 | 缺陷清单 | `reports/module1/M1-成员A-编码与纠错-缺陷清单.docx` | 已生成；C 复现栏待填写 |
+| 最新缺陷补充 | `reports/module1/M1-编码与纠错-缺陷补充记录.md` | 记录 A-02、A-03 的复现、修复与回归 |
 | 测试报告 | `reports/module1/M1-成员A-编码与纠错-测试报告.docx` | 已生成；人工审核待完成 |
 
 > 课程规则要求模块一为人工完成。以上 A 分支材料是技术草稿；成员 A 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
