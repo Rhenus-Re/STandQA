@@ -181,7 +181,7 @@ python -m pytest tests/manual/test_output_cli.py
 python -m pytest tests/manual --cov=qrcode --cov-report=term-missing
 ```
 
-修复 C-01 后，C 域测试为 12 个 pytest 项通过（对应 `TC-C-001` 至 `TC-C-012`）。
+修复 C-01 后，C 域测试为 12 个 pytest 项通过（对应 `TC-C-001` 至 `TC-C-012`）；与图像输出层草稿用例（`tests/manual/member-C/`）合并执行 24 项全部通过。合并覆盖率为总覆盖率 68%，其中 `image/pure.py` 97%、`image/base.py` 93%、`image/svg.py` 93%、`image/pil.py` 85%、`main.py` 80%、`console_scripts.py` 74%；`.coverage`/`coverage.xml` 为可再生输出，不提交至仓库。
 
 ## 8. 成员 C 贡献索引（`member-c/output-commandline`）
 
