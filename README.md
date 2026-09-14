@@ -2,7 +2,7 @@
 
 本仓库用于华中科技大学软件学院《软件测试与质量保证实践》小组作业。被测对象选定为 [lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)，计划固定在 `8.2` 版本开展测试。
 
-> 已引入 `python-qrcode v8.2` 被测源码；课程测试用例和测试脚本尚未加入。
+> 已引入 `python-qrcode v8.2` 被测源码。`member-c/output-commandline` 分支包含成员 C 的输出与命令行测试、C-01 修复和对应证据材料；`main` 历史不在该分支上改写。
 
 ## 1. 项目目标
 
@@ -43,11 +43,14 @@ STandQA/
 │   └── LICENSE                     # 上游 BSD-3-Clause 许可证
 ├── tests/
 │   ├── manual/                     # 模块一：人工设计的自动化测试
+│   │   ├── test_output_cli.py      # C：输出与命令行（待 C 独立审阅）
+│   │   ├── member-C/               # C：图像输出层草稿用例
 │   │   └── README.md
 │   └── ai_generated/               # 模块二：AI生成且经人工审核的测试
 │       └── README.md
 ├── testdata/
 │   ├── manual/                     # 模块一人工准备的数据
+│   │   ├── M1-输出与命令行-01~05   # C：输入数据、CLI参数集与期望输出基线
 │   │   └── README.md
 │   └── ai_generated/               # 模块二AI生成且经审核的数据
 │       └── README.md
@@ -154,9 +157,49 @@ python -m pytest tests/manual
 python -m pytest tests/ai_generated
 ```
 
-当前仓库已包含被测源码，但尚无课程测试代码，因此以上测试入口将在后续阶段启用。
+实际验证环境（成员 C 分支）：
 
-## 8. 质量与审查要求
+- Python 3.11.9
+- pytest 8.4.2，pytest-cov
+- Pillow 12.3.0，PyPNG
+
+一键执行全部当前测试：
+
+```powershell
+python -m pytest
+```
+
+成员 C 的输出与命令行测试：
+
+```powershell
+python -m pytest tests/manual/test_output_cli.py
+```
+
+成员 C 的覆盖率命令：
+
+```powershell
+python -m pytest tests/manual --cov=qrcode --cov-report=term-missing
+```
+
+修复 C-01 后，C 域测试为 12 个 pytest 项通过（对应 `TC-C-001` 至 `TC-C-012`）。
+
+## 8. 成员 C 贡献索引（`member-c/output-commandline`）
+
+| 项目 | 位置 | 状态 |
+|---|---|---|
+| 输出与命令行测试 | `tests/manual/test_output_cli.py` | 12 个编号用例（TC-C-001~012），待成员 C 独立审阅确认 |
+| C-01 回归与修复 | `qrcode/main.py`（print_tty 静区） | 已完成本地回归；待成员 B 实际交叉复现 |
+| 人工测试数据 | `testdata/manual/M1-输出与命令行-01~05` | 已生成；期望输出基线由固定参数确定性生成 |
+| 需求分析与用例设计 | `reports/module1/member-c-requirements-output-cli.md`、`member-c-testcases-output-cli.md` | 已生成 |
+| 缺陷记录 | `reports/module1/member-c-defects-output-cli.md` | 已生成；B 复现栏待填写 |
+| 测试用例清单 | `reports/module1/M1-成员C-输出与命令行域-测试用例清单.xlsx` | 已生成 |
+| 缺陷清单 | `reports/module1/M1-成员C-输出与命令行域-缺陷清单.docx` | 已生成；B 复现栏待填写 |
+| 测试报告 | `reports/module1/M1-成员C-输出与命令行域-测试报告.docx` | 已生成；人工审核待完成 |
+| 成果汇报 | `reports/module1/M1-成员C-输出与命令行域-成果汇报.pptx` | 已生成 |
+
+> 课程规则要求模块一为人工完成。以上 C 分支材料是技术草稿；成员 C 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
+
+## 9. 质量与审查要求
 
 - 用例必须具有明确需求依据和可验证的预期结果。
 - GitHub Issue、功能建议、正常抛出的异常不能直接视为有效缺陷。
@@ -165,7 +208,7 @@ python -m pytest tests/ai_generated
 - 提交前检查仓库中不得包含 API 密钥、账号、个人敏感信息或未脱敏对话。
 - 报告中的个人贡献必须与 Git 提交记录一致。
 
-## 9. 上游项目与许可
+## 10. 上游项目与许可
 
 - 上游项目：[lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)
 - 固定测试标签：`v8.2`
