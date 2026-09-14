@@ -276,6 +276,13 @@ class Polynomial:
         if difference < 0:
             return self
 
+        # A-02：零值数据块对应的多项式余数仍为零，不能计算 glog(0)。
+        if self[0] == 0:
+            num = list(self[1:])
+            if difference:
+                num.append(0)
+            return Polynomial(num, 0) % other
+
         ratio = glog(self[0]) - glog(other[0])
 
         num = [
@@ -295,6 +302,8 @@ class RSBlock(NamedTuple):
 
 
 def rs_blocks(version, error_correction):
+    if version < 1 or version > 40:
+        raise ValueError(f"Invalid version (was {version}, expected 1 to 40)")
     if error_correction not in RS_BLOCK_OFFSET:  # pragma: no cover
         raise Exception(
             "bad rs block @ version: %s / error_correction: %s"
