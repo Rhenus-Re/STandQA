@@ -1,0 +1,23 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-8.4.2, pluggy-1.6.0 -- D:\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: D:\tests\module1-test
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-7.1.0
+collecting ... collected 12 items
+
+tests/manual/test_output_cli.py::test_tc_c_001_pil_geometry_and_mode_equivalence PASSED [  8%]
+tests/manual/test_output_cli.py::test_tc_c_002_pil_min_params_pixels_boundary PASSED [ 16%]
+tests/manual/test_output_cli.py::test_tc_c_003_pil_png_roundtrip_scenario PASSED [ 25%]
+tests/manual/test_output_cli.py::test_tc_c_004_pil_color_modes_equivalence PASSED [ 33%]
+tests/manual/test_output_cli.py::test_tc_c_005_pypng_roundtrip_and_cross_backend_scenario PASSED [ 41%]
+tests/manual/test_output_cli.py::test_tc_c_006_pypng_kind_and_stream_equivalence PASSED [ 50%]
+tests/manual/test_output_cli.py::test_tc_c_007_svg_root_geometry_namespace_equivalence PASSED [ 58%]
+tests/manual/test_output_cli.py::test_tc_c_008_svg_path_merge_scenario PASSED [ 66%]
+tests/manual/test_output_cli.py::test_tc_c_009_print_ascii_invert_boundary PASSED [ 75%]
+tests/manual/test_output_cli.py::test_tc_c_010_tty_guard_equivalence PASSED [ 83%]
+tests/manual/test_output_cli.py::test_tc_c_011_print_tty_respects_border_scenario PASSED [ 91%]
+tests/manual/test_output_cli.py::test_tc_c_012_cli_end_to_end_scenario PASSED [100%]
+
+============================= 12 passed in 0.29s ==============================
