@@ -147,3 +147,12 @@ def test_get_matrix_border():
     # border=0 返回无边框矩阵
     qr.border = 0
     assert len(qr.get_matrix()) == qr.modules_count
+
+
+# TC-B-13 自动适配超出版本 40 时应报告数据溢出（边界值，缺陷 B-04）
+def test_auto_fit_over_maximum_capacity_raises_data_overflow():
+    qr = QRCode()
+    qr.add_data(b"A" * 5000)
+
+    with pytest.raises(exceptions.DataOverflowError):
+        qr.make()
