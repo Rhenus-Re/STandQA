@@ -9,7 +9,7 @@
 
 import pytest
 
-from qrcode import LUT, base, constants, exceptions, util
+from qrcode import LUT, QRCode, base, constants, exceptions, util
 
 
 def _bits(buffer):
@@ -112,7 +112,7 @@ def test_low_level_version_helpers_reject_out_of_range_versions(version):
         util.pattern_position(version)
 
 
-# TC-A-10 RS 分组与纠错生成多项式（场景法）
+# TC-A-10 RS 分组、生成多项式与零字节纠错回归（场景法，缺陷 A-02）
 def test_rs_blocks_and_generator_polynomial_match_lookup_table():
     blocks = base.rs_blocks(5, constants.ERROR_CORRECT_Q)
     assert [(block.total_count, block.data_count) for block in blocks] == [
@@ -127,6 +127,12 @@ def test_rs_blocks_and_generator_polynomial_match_lookup_table():
         generator = generator * base.Polynomial([1, base.gexp(exponent)], 0)
     assert list(generator) == LUT.rsPoly_LUT[7]
 
+    # v5-Q 的第二个数据块恰好全为 0 时，RS 余数应为零而非调用 glog(0)。
+    qr = QRCode(version=5, error_correction=constants.ERROR_CORRECT_Q)
+    qr.add_data(b"\x00" * 28)
+    qr.make(fit=False)
+    assert len(qr.data_cache) == 134
+
 
 # TC-A-11 BCH：格式信息和版本信息的已知编码向量（等价类）
 def test_bch_type_info_and_version_number_vectors():
@@ -135,10 +141,28 @@ def test_bch_type_info_and_version_number_vectors():
     assert util.BCH_type_number(7) == 0b000111110010010100
 
 
-# TC-A-12 八种掩码公式与全黑矩阵惩罚评分（场景法）
+# TC-A-12 八种掩码公式、惩罚评分与完整符号掩码选择（场景法，缺陷 A-03）
 def test_mask_functions_and_lost_point_score():
     expected = [False, False, False, True, True, False, True, False]
     assert [util.mask_func(pattern)(1, 2) for pattern in range(8)] == expected
 
     full_dark = [[True] * 5 for _ in range(5)]
     assert util.lost_point(full_dark) == 178
+
+    data = b"https://example.com/a?b=1"
+    automatic = QRCode(error_correction=constants.ERROR_CORRECT_M)
+    automatic.add_data(data)
+    selected_mask = automatic.best_mask_pattern()
+
+    complete_scores = []
+    for mask in range(8):
+        candidate = QRCode(
+            version=automatic.version,
+            error_correction=constants.ERROR_CORRECT_M,
+            mask_pattern=mask,
+        )
+        candidate.add_data(data)
+        candidate.make(fit=False)
+        complete_scores.append(util.lost_point(candidate.modules))
+
+    assert selected_mask == complete_scores.index(min(complete_scores)) == 2
