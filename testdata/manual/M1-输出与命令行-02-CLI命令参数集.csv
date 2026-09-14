@@ -1,0 +1,4 @@
+﻿用例编号,命令参数,数据来源,预期输出,校验断言
+TC-C-012-PNG,--output <file>.png M1-CLI,01-编码输入数据.txt（位置参数等价）,290x290 PNG 文件,"PIL 打开 format=PNG、size=(290,290)"
+TC-C-012-SVG,--factory svg --output <file>.svg M1-CLI,01-编码输入数据.txt（位置参数等价）,独立 SVG 文档,根元素 tag 含 {http://www.w3.org/2000/svg}svg
+TC-C-012-ASCII,--ascii M1-CLI,01-编码输入数据.txt（位置参数等价）,标准输出 ASCII 二维码,"15 行、每行 29 字符（version=1,border=4）"
