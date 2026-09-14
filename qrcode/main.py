@@ -271,16 +271,26 @@ class QRCode(Generic[GenericImage]):
             self.make()
 
         modcount = self.modules_count
-        out.write("\x1b[1;47m" + (" " * (modcount * 2 + 4)) + "\x1b[0m\n")
+        # Each module is rendered as 2 visible chars; the quiet zone is
+        # self.border modules wide on every side, so each side contributes
+        # self.border * 2 chars. Using self.border (instead of a hardcoded
+        # 1-module zone) keeps print_tty consistent with print_ascii and the
+        # QR spec's minimum quiet-zone requirement.
+        quiet_zone = self.border * 2
+        out.write(
+            "\x1b[1;47m" + (" " * (modcount * 2 + quiet_zone * 2)) + "\x1b[0m\n"
+        )
         for r in range(modcount):
-            out.write("\x1b[1;47m  \x1b[40m")
+            out.write("\x1b[1;47m" + (" " * quiet_zone) + "\x1b[40m")
             for c in range(modcount):
                 if self.modules[r][c]:
                     out.write("  ")
                 else:
                     out.write("\x1b[1;47m  \x1b[40m")
-            out.write("\x1b[1;47m  \x1b[0m\n")
-        out.write("\x1b[1;47m" + (" " * (modcount * 2 + 4)) + "\x1b[0m\n")
+            out.write("\x1b[1;47m" + (" " * quiet_zone) + "\x1b[0m\n")
+        out.write(
+            "\x1b[1;47m" + (" " * (modcount * 2 + quiet_zone * 2)) + "\x1b[0m\n"
+        )
         out.flush()
 
     def print_ascii(self, out=None, tty=False, invert=False):
