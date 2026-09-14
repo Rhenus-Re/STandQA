@@ -2,7 +2,7 @@
 
 本仓库用于华中科技大学软件学院《软件测试与质量保证实践》小组作业。被测对象选定为 [lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)，计划固定在 `8.2` 版本开展测试。
 
-> 已引入 `python-qrcode v8.2` 被测源码；课程测试用例和测试脚本尚未加入。
+> 已引入 `python-qrcode v8.2` 被测源码。`member-a/encoding-correction` 分支包含成员 A 的编码与纠错测试、A-01 修复和对应证据材料；`main` 历史不在该分支上改写。
 
 ## 1. 项目目标
 
@@ -43,7 +43,8 @@ STandQA/
 │   └── LICENSE                     # 上游 BSD-3-Clause 许可证
 ├── tests/
 │   ├── manual/                     # 模块一：人工设计的自动化测试
-│   │   └── README.md
+│   │   ├── test_encoding_ecc.py     # A：编码与纠错（待 A 独立审阅）
+│   │   └── test_object_matrix.py    # B：对象与矩阵基线测试
 │   └── ai_generated/               # 模块二：AI生成且经人工审核的测试
 │       └── README.md
 ├── testdata/
@@ -154,9 +155,45 @@ python -m pytest tests/manual
 python -m pytest tests/ai_generated
 ```
 
-当前仓库已包含被测源码，但尚无课程测试代码，因此以上测试入口将在后续阶段启用。
+实际验证环境（成员 A 分支）：
 
-## 8. 质量与审查要求
+- Python 3.12.14
+- pytest 8.4.2，pytest-cov 7.1.0
+- Pillow 12.3.0，PyPNG 0.20220715.0
+
+一键执行全部当前测试：
+
+```powershell
+python -m pytest
+```
+
+成员 A 的编码与纠错测试：
+
+```powershell
+python -m pytest tests/manual/test_encoding_ecc.py
+```
+
+成员 A 的覆盖率命令：
+
+```powershell
+python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-report=xml
+```
+
+修复 A-01 后，A 域测试为 13 个 pytest 项通过（对应 `TC-A-01` 至 `TC-A-12`，其中 TC-A-09 参数化 2 项）；与 B 基线人工测试合并后为 28 项通过。完整覆盖率结果为总覆盖率 51%、`base.py` 99%、`util.py` 96%；`coverage.xml` 为可再生输出，不提交至仓库。
+
+## 8. 成员 A 贡献索引（`member-a/encoding-correction`）
+
+| 项目 | 位置 | 状态 |
+|---|---|---|
+| 编码与纠错测试 | `tests/manual/test_encoding_ecc.py` | 12 个编号用例，待成员 A 独立审阅确认 |
+| A-01 回归与修复 | `qrcode/base.py`、`qrcode/util.py` | 已完成本地回归；待成员 C 实际交叉复现 |
+| 测试用例清单 | `reports/module1/M1-成员A-编码与纠错-测试用例清单.xlsx` | 已生成 |
+| 缺陷清单 | `reports/module1/M1-成员A-编码与纠错-缺陷清单.docx` | 已生成；C 复现栏待填写 |
+| 测试报告 | `reports/module1/M1-成员A-编码与纠错-测试报告.docx` | 已生成；人工审核待完成 |
+
+> 课程规则要求模块一为人工完成。以上 A 分支材料是技术草稿；成员 A 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
+
+## 9. 质量与审查要求
 
 - 用例必须具有明确需求依据和可验证的预期结果。
 - GitHub Issue、功能建议、正常抛出的异常不能直接视为有效缺陷。
@@ -165,7 +202,7 @@ python -m pytest tests/ai_generated
 - 提交前检查仓库中不得包含 API 密钥、账号、个人敏感信息或未脱敏对话。
 - 报告中的个人贡献必须与 Git 提交记录一致。
 
-## 9. 上游项目与许可
+## 10. 上游项目与许可
 
 - 上游项目：[lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)
 - 固定测试标签：`v8.2`
