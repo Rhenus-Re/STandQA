@@ -156,3 +156,23 @@ def test_auto_fit_over_maximum_capacity_raises_data_overflow():
 
     with pytest.raises(exceptions.DataOverflowError):
         qr.make()
+
+
+# TC-B-14 修改显式版本后应重新编码（场景法，缺陷 B-05）
+def test_changing_version_invalidates_encoded_data_cache():
+    payload = "cache-change"
+    qr = QRCode(version=1, error_correction=constants.ERROR_CORRECT_L)
+    qr.add_data(payload)
+    qr.make(fit=False)
+    assert len(qr.data_cache) == 26
+
+    qr.version = 2
+    qr.make(fit=False)
+
+    expected = QRCode(version=2, error_correction=constants.ERROR_CORRECT_L)
+    expected.add_data(payload)
+    expected.make(fit=False)
+
+    assert len(qr.data_cache) == 44
+    assert qr.data_cache == expected.data_cache
+    assert qr.modules == expected.modules
