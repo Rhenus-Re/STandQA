@@ -236,11 +236,12 @@ class QRCode(Generic[GenericImage]):
             data.write(buffer)
 
         needed_bits = len(buffer)
-        self.version = bisect_left(
+        version = bisect_left(
             util.BIT_LIMIT_TABLE[self.error_correction], needed_bits, start
         )
-        if self.version == 41:
+        if version == 41:
             raise exceptions.DataOverflowError()
+        self.version = version
 
         # Now check whether we need more bits for the mode sizes, recursing if
         # our guess was too low
