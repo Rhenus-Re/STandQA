@@ -256,7 +256,8 @@ class QRCode(Generic[GenericImage]):
         pattern = 0
 
         for i in range(8):
-            self.makeImpl(True, i)
+            # A-03：评分必须包含真实的格式/版本信息和固定深色模块。
+            self.makeImpl(False, i)
 
             lost_point = util.lost_point(self.modules)
 
