@@ -135,6 +135,7 @@ def BCH_digit(data):
 
 
 def pattern_position(version):
+    check_version(version)
     return PATTERN_POSITION_TABLE[version - 1]
 
 
