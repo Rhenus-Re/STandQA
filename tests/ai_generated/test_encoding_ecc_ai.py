@@ -118,3 +118,52 @@ def test_create_bytes_interleaves_unequal_rs_blocks_in_column_order():
 
     blocks = [base.RSBlock(3, 2), base.RSBlock(4, 3)]
     assert util.create_bytes(buffer, blocks) == [1, 3, 2, 4, 5, 3, 2]
+
+
+# TC-A-AI-09 有限域指数表以 255 为周期（等价类）
+def test_gexp_repeats_after_galois_field_period():
+    assert base.gexp(0) == base.gexp(255) == 1
+    assert base.gexp(1) == base.gexp(256) == 2
+    assert base.gexp(254) == 142
+
+
+# TC-A-AI-10 有限域多项式乘法参考向量（等价类）
+def test_polynomial_multiplication_matches_galois_field_vector():
+    left = base.Polynomial([1, 2], 0)
+    right = base.Polynomial([1, 3], 0)
+    assert list(left * right) == [1, 1, 6]
+
+
+# TC-A-AI-11 BCH 格式与版本信息新增向量（等价类）
+def test_bch_type_vectors_cover_additional_format_and_version_values():
+    assert util.BCH_type_info(0) == 0b101010000010010
+    assert util.BCH_type_info(3) == 0b101101101001011
+    assert util.BCH_type_number(10) == 0b001010010011010011
+    assert util.BCH_type_number(40) == 0b101000110001101001
+
+
+# TC-A-AI-12 校正图案位置查表结果（边界值）
+def test_pattern_position_returns_known_version_coordinates():
+    assert util.pattern_position(1) == []
+    assert util.pattern_position(2) == [6, 18]
+    assert util.pattern_position(7) == [6, 22, 38]
+    assert util.pattern_position(40) == [6, 30, 58, 86, 114, 142, 170]
+
+
+# TC-A-AI-13 2×2 同色方块惩罚规则（等价类）
+def test_lost_point_level2_penalizes_a_dark_two_by_two_block():
+    modules = [[True, True], [True, True]]
+    assert util._lost_point_level2(modules, 2) == 3
+
+
+# TC-A-AI-14 1011101 模式惩罚规则（场景法）
+def test_lost_point_level3_penalizes_finder_like_horizontal_pattern():
+    modules = [[False] * 11 for _ in range(11)]
+    modules[5] = [False, False, False, False, True, False, True, True, True, False, True]
+    assert util._lost_point_level3(modules, 11) == 40
+
+
+# TC-A-AI-15 深色模块比例惩罚规则（边界值）
+def test_lost_point_level4_penalizes_all_dark_matrix():
+    modules = [[True] * 10 for _ in range(10)]
+    assert util._lost_point_level4(modules, 10) == 100
