@@ -110,12 +110,16 @@ STandQA/
 
 ## 6. 分支与版本规则
 
-- `main`：可展示、可提交的稳定成果。
-- `module1-work`：模块一集成分支。
-- `module2-ai-testing`：模块二 AI 测试分支，只能在 `module1-final` 之后创建。
-- `member-a/*`、`member-b/*`、`member-c/*`：成员个人工作分支。
+- `main`：唯一稳定主线，仅保留已确认、可展示的成果。
+- `module1-integration`：模块一集成与交付分支，汇总 A、B、C 三个测试域的代码、证据材料、PPT 和演示视频。
+- `module2-ai-testing`：模块二 AI 测试与交付分支，只能在 `module1-final` 之后创建。
+- `module1-work`：模块一历史工作分支；其内容已并入 `module1-integration`，不再用于日常开发。
+- `archive/member-a-encoding`、`archive/member-c-output`：成员 A、C 的只读历史归档分支，保留原始提交记录以便追溯，不再继续提交。
+- 不再保留重复的 `member-b/module1` 和 `member-b/module2` 分支；其内容分别由 `module1-work` 和 `module2-ai-testing` 承接。
 - `module1-final`：模块一提交快照标签。
 - `module2-final`：模块二最终提交快照标签。
+
+本地 PPT 制作工作区、转换项目目录和绘图软件临时恢复文件均由 `.gitignore` 屏蔽；仓库只提交最终交付的 PPT、报告、图表、素材和可复现的生成脚本。
 
 推荐提交信息：
 
@@ -189,7 +193,7 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 
 修复 A-01、A-02、A-03、B-04 与 B-05 后，A 域测试为 13 个 pytest 项通过（对应 `TC-A-01` 至 `TC-A-12`，其中 TC-A-09 参数化 2 项），B 域测试为 17 项通过；修复 C-01（print_tty 静区）、C-BUG-01（PyPNG 文件句柄泄漏）与 C-BUG-02（PyPNG kind 未校验）后，C 域测试为 12 项通过（对应 `TC-C-001` 至 `TC-C-012`）。三域合并执行 42 项全部通过，合并总覆盖率 73%，其中 `util.py` 98%、`image/pure.py` 97%、`main.py` 93%、`image/base.py` 93%、`image/svg.py` 93%、`image/pil.py` 85%、`console_scripts.py` 74%；`coverage.xml` 为可再生输出，不提交至仓库。
 
-## 8. 成员 A 贡献索引（`member-a/encoding-correction`）
+## 8. 成员 A 贡献索引（归档：`archive/member-a-encoding`）
 
 | 项目 | 位置 | 状态 |
 |---|---|---|
@@ -213,7 +217,7 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 | 测试报告 | `reports/module1/M1-成员B-对象与矩阵-测试报告.docx` | 已生成 |
 | 成果汇报 | `reports/module1/M1-成员B-对象与矩阵-成果汇报.pptx` | 已生成 |
 
-## 8.2 成员 C 贡献索引（`member-c/output-commandline`）
+## 8.2 成员 C 贡献索引（归档：`archive/member-c-output`）
 
 | 项目 | 位置 | 状态 |
 |---|---|---|
