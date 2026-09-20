@@ -1,0 +1,59 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-8.4.2, pluggy-1.6.0 -- D:\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: D:\tests\module1-test
+configfile: pytest.ini
+testpaths: tests
+plugins: cov-7.1.0
+collecting ... collected 12 items
+
+tests/manual/test_output_cli.py::test_tc_c_001_pil_geometry_and_mode_equivalence PASSED [  8%]
+tests/manual/test_output_cli.py::test_tc_c_002_pil_min_params_pixels_boundary PASSED [ 16%]
+tests/manual/test_output_cli.py::test_tc_c_003_pil_png_roundtrip_scenario PASSED [ 25%]
+tests/manual/test_output_cli.py::test_tc_c_004_pil_color_modes_equivalence PASSED [ 33%]
+tests/manual/test_output_cli.py::test_tc_c_005_pypng_roundtrip_and_cross_backend_scenario PASSED [ 41%]
+tests/manual/test_output_cli.py::test_tc_c_006_pypng_kind_and_stream_equivalence PASSED [ 50%]
+tests/manual/test_output_cli.py::test_tc_c_007_svg_root_geometry_namespace_equivalence PASSED [ 58%]
+tests/manual/test_output_cli.py::test_tc_c_008_svg_path_merge_scenario PASSED [ 66%]
+tests/manual/test_output_cli.py::test_tc_c_009_print_ascii_invert_boundary PASSED [ 75%]
+tests/manual/test_output_cli.py::test_tc_c_010_tty_guard_equivalence PASSED [ 83%]
+tests/manual/test_output_cli.py::test_tc_c_011_print_tty_respects_border_scenario FAILED [ 91%]
+tests/manual/test_output_cli.py::test_tc_c_012_cli_end_to_end_scenario PASSED [100%]
+
+================================== FAILURES ===================================
+______________ test_tc_c_011_print_tty_respects_border_scenario _______________
+
+    def test_tc_c_011_print_tty_respects_border_scenario():
+        """TC-C-011（场景法，C-BUG-01 回归）：print_tty 输出的可见行宽必须
+        等于 modcount*2 + border*4，即静区宽度遵循 self.border 而非硬编码为 1 模块。
+    
+        修复前 print_tty 把静区写死为每侧 1 模块（共 4 字符），忽略 self.border，
+        导致默认 border=4 时行宽为 46 而非期望的 58。
+        """
+        qr = qrcode.QRCode(version=1, box_size=1, border=4)
+        qr.add_data(DATA)
+        qr.make()
+    
+        ft = _FakeTty()
+        qr.print_tty(out=ft)
+        visible = _visible("".join(ft.buf))
+        lines = [l for l in visible.split("\n") if l != ""]
+    
+        expected_width = qr.modules_count * 2 + qr.border * 4  # 21*2 + 4*4 = 58
+        assert expected_width == 58  # 自检
+        assert lines, "print_tty 未产生任何输出行"
+        for line in lines:
+>           assert len(line) == expected_width, (
+                f"print_tty 行宽 {len(line)} != 期望 {expected_width}"
+                f"（border={qr.border} 被忽略，修复前为 {len(line)}）"
+            )
+E           AssertionError: print_tty 行宽 46 != 期望 58（border=4 被忽略，修复前为 46）
+E           assert 46 == 58
+E            +  where 46 = len('                                              ')
+
+tests\manual\test_output_cli.py:310: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/manual/test_output_cli.py::test_tc_c_011_print_tty_respects_border_scenario - AssertionError: print_tty 行宽 46 != 期望 58（border=4 被忽略，修复前为 46）
+assert 46 == 58
+ +  where 46 = len('                                              ')
+======================== 1 failed, 11 passed in 0.46s =========================

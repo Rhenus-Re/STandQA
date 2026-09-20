@@ -1,0 +1,95 @@
+<mxfile host="app.diagrams.net" modified="2026-09-14T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="test-case-design" name="测试用例设计">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="测试用例设计：风险域 × 设计方法" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=25;fontStyle=1;fontColor=#1F2937;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="900" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="从风险点出发，使用边界值、等价类和场景法构造可验证的测试条件与预期断言" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#64748B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="68" width="1000" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="colRisk" value="风险域" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#475569;fontStyle=1;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="180" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="colBoundary" value="边界值" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontColor=#1E3A8A;fontStyle=1;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="250" y="130" width="200" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="colEquiv" value="等价类" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#4ADE80;fontColor=#166534;fontStyle=1;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="480" y="130" width="200" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="colScenario" value="场景法" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#FB923C;fontColor=#9A3412;fontStyle=1;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="710" y="130" width="200" height="48" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneA" value="A 域&lt;br&gt;&lt;font color='#1E3A8A'&gt;编码 / 纠错 / 掩码&lt;/font&gt;" style="swimlane;html=1;rounded=1;horizontal=0;startSize=48;fillColor=#EFF6FF;swimlaneFillColor=#DBEAFE;strokeColor=#60A5FA;fontColor=#1E3A8A;fontStyle=1;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="870" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="aBoundary" value="空数据 / 零字节&lt;br&gt;&lt;font color='#64748B'&gt;glog(0) 边界&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneA">
+          <mxGeometry x="210" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="aEquiv" value="编码模式&lt;br&gt;&lt;font color='#64748B'&gt;BYTE / 数字 / 中文&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneA">
+          <mxGeometry x="440" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="aScenario" value="编码到纠错&lt;br&gt;&lt;font color='#64748B'&gt;码字与多项式链路&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneA">
+          <mxGeometry x="670" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneB" value="B 域&lt;br&gt;&lt;font color='#9A3412'&gt;对象状态 / 版本 / 矩阵&lt;/font&gt;" style="swimlane;html=1;rounded=1;horizontal=0;startSize=48;fillColor=#FFF7ED;swimlaneFillColor=#FFEDD5;strokeColor=#FB923C;fontColor=#9A3412;fontStyle=1;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="340" width="870" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="bBoundary" value="版本边界&lt;br&gt;&lt;font color='#64748B'&gt;Version 1 / 2&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneB">
+          <mxGeometry x="210" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="bEquiv" value="对象状态&lt;br&gt;&lt;font color='#64748B'&gt;新建 / 清空 / 复用&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneB">
+          <mxGeometry x="440" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="bScenario" value="版本切换&lt;br&gt;&lt;font color='#64748B'&gt;缓存与矩阵一致性&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneB">
+          <mxGeometry x="670" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneC" value="C 域&lt;br&gt;&lt;font color='#166534'&gt;图像 / 文本 / CLI&lt;/font&gt;" style="swimlane;html=1;rounded=1;horizontal=0;startSize=48;fillColor=#F0FDF4;swimlaneFillColor=#DCFCE7;strokeColor=#4ADE80;fontColor=#166534;fontStyle=1;fontSize=14;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="480" width="870" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="cBoundary" value="边框 / 尺寸&lt;br&gt;&lt;font color='#64748B'&gt;border=0 / 4&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneC">
+          <mxGeometry x="210" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cEquiv" value="输出类型&lt;br&gt;&lt;font color='#64748B'&gt;PNG / SVG / ASCII&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneC">
+          <mxGeometry x="440" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="cScenario" value="CLI 与文件&lt;br&gt;&lt;font color='#64748B'&gt;--output / --factory&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneC">
+          <mxGeometry x="670" y="50" width="200" height="54" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a1" value="扩展输入类别" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#60A5FA;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneA" source="aBoundary" target="aEquiv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" value="组合链路" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#60A5FA;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneA" source="aEquiv" target="aScenario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b1" value="覆盖状态" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FB923C;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#9A3412;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneB" source="bBoundary" target="bEquiv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b2" value="组合链路" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FB923C;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#9A3412;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneB" source="bEquiv" target="bScenario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" value="扩展输出类" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4ADE80;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#166534;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneC" source="cBoundary" target="cEquiv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" value="端到端组合" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4ADE80;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#166534;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneC" source="cEquiv" target="cScenario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="summary" value="&lt;b&gt;38 条用例的设计方法&lt;/b&gt;&lt;br&gt;&lt;br&gt;边界值：最小、最大和临界输入&lt;br&gt;等价类：有效、无效和输出后端&lt;br&gt;场景法：跨函数、跨对象和端到端链路&lt;br&gt;&lt;br&gt;&lt;b&gt;两组高价值组合&lt;/b&gt;&lt;br&gt;① Version 1 → Version 2 → 新建 Version 2&lt;br&gt;② border=4 → print_tty()：46 → 58" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=2;fontColor=#334155;align=left;verticalAlign=top;fontSize=14;spacingTop=16;spacingLeft=16;spacingRight=16;" vertex="1" parent="1">
+          <mxGeometry x="960" y="200" width="360" height="392" as="geometry" />
+        </mxCell>
+        <mxCell id="footer" value="输入条件 → 测试方法 → 预期断言" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#475569;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="640" width="1280" height="48" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

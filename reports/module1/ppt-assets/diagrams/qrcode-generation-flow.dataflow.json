@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "二维码生成流程：从输入到可渲染输出",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560],
+    "animation": "none",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    },
+    "output": "reports/module1/ppt-assets/diagrams/qrcode-generation-flow.html"
+  },
+  "stages": [
+    { "label": "01 / 输入" },
+    { "label": "02 / 编码" },
+    { "label": "03 / 容量与纠错" },
+    { "label": "04 / 矩阵" },
+    { "label": "05 / 输出" }
+  ],
+  "nodes": [
+    {
+      "id": "inputData",
+      "type": "external",
+      "label": "输入数据",
+      "sublabel": "add_data()",
+      "tag": "HUST-STandQA-2026 · 17 bytes",
+      "stage": 0,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "encodeData",
+      "type": "backend",
+      "label": "分析并编码",
+      "sublabel": "optimal_data_chunks()",
+      "tag": "BYTE 模式",
+      "stage": 1,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "chooseCapacity",
+      "type": "backend",
+      "label": "选择版本与容量",
+      "sublabel": "best_fit() / create_data()",
+      "tag": "Version 2 · M 级",
+      "stage": 2,
+      "row": 0,
+      "width": 160
+    },
+    {
+      "id": "errorCorrection",
+      "type": "backend",
+      "label": "生成纠错码字",
+      "sublabel": "create_bytes() · RS",
+      "tag": "44 个总码字",
+      "stage": 2,
+      "row": 2,
+      "width": 160
+    },
+    {
+      "id": "matrix",
+      "type": "backend",
+      "label": "生成模块矩阵",
+      "sublabel": "makeImpl() · mask 0",
+      "tag": "25×25 modules",
+      "stage": 3,
+      "row": 1,
+      "width": 160
+    },
+    {
+      "id": "renderOutput",
+      "type": "external",
+      "label": "渲染输出",
+      "sublabel": "make_image() / print_ascii()",
+      "tag": "PNG · SVG · ASCII",
+      "stage": 4,
+      "row": 1,
+      "width": 160
+    }
+  ],
+  "flows": [
+    {
+      "id": "inputToEncode",
+      "from": "inputData",
+      "to": "encodeData",
+      "label": "UTF-8 字节",
+      "classification": "输入",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": -24
+    },
+    {
+      "id": "encodeToCapacity",
+      "from": "encodeData",
+      "to": "chooseCapacity",
+      "label": "编码数据",
+      "classification": "编码",
+      "variant": "emphasis",
+      "route": "auto",
+      "labelDy": -24
+    },
+    {
+      "id": "capacityToCorrection",
+      "from": "chooseCapacity",
+      "to": "errorCorrection",
+      "label": "数据区 + 纠错区",
+      "classification": "分块",
+      "variant": "default",
+      "route": "vertical-channel",
+      "labelDx": 18
+    },
+    {
+      "id": "correctionToMatrix",
+      "from": "errorCorrection",
+      "to": "matrix",
+      "label": "44 个码字",
+      "classification": "RS 纠错后数据",
+      "variant": "emphasis",
+      "route": "auto",
+      "labelDy": 24
+    },
+    {
+      "id": "matrixToOutput",
+      "from": "matrix",
+      "to": "renderOutput",
+      "label": "25×25 模块矩阵",
+      "classification": "渲染输入",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelAt": [853, 314]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "真实输入链路",
+      "items": [
+        "输入为 HUST-STandQA-2026，共 17 个 UTF-8 字节",
+        "最终选择 Version 2、M 级纠错和 mask 0",
+        "最终生成 44 个总码字与 25×25 模块矩阵"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "输出形态",
+      "items": [
+        "同一模块矩阵可渲染为 PNG、SVG 和 ASCII",
+        "输出成品保存在 reports/module1/ppt-assets/qr-chain/"
+      ]
+    }
+  ]
+}

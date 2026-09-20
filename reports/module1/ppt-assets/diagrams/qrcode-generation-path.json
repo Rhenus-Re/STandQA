@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "python-qrcode 二维码生成路径",
+    "locale": "zh-CN",
+    "output": "reports/module1/ppt-assets/diagrams/qrcode-generation-path.html",
+    "viewBox": [1080, 720],
+    "quality_profile": "showcase"
+  },
+  "stages": [
+    { "label": "输入" },
+    { "label": "数据编码" },
+    { "label": "容量与纠错" },
+    { "label": "矩阵生成" },
+    { "label": "输出" }
+  ],
+  "nodes": [
+    {
+      "id": "urlInput",
+      "type": "external",
+      "label": "Bilibili URL",
+      "sublabel": "129 UTF-8 字节",
+      "tag": "输入样例",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "addData",
+      "type": "backend",
+      "label": "QRCode.add_data()",
+      "sublabel": "接收字节并清除缓存",
+      "tag": "main.py",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "dataChunks",
+      "type": "backend",
+      "label": "optimal_data_chunks()",
+      "sublabel": "选择 BYTE 编码块",
+      "tag": "util.py",
+      "stage": 1,
+      "row": 2,
+      "width": 156
+    },
+    {
+      "id": "bestFit",
+      "type": "backend",
+      "label": "best_fit()",
+      "sublabel": "选择最小可容纳版本 8",
+      "tag": "main.py",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "codewords",
+      "type": "backend",
+      "label": "create_data() / create_bytes()",
+      "sublabel": "比特流、填充与 RS 纠错",
+      "tag": "242 个最终码字",
+      "stage": 2,
+      "row": 2,
+      "width": 204
+    },
+    {
+      "id": "maskScore",
+      "type": "backend",
+      "label": "best_mask_pattern()",
+      "sublabel": "评分 8 种候选掩码",
+      "tag": "选中掩码 2",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "matrix",
+      "type": "backend",
+      "label": "makeImpl() / map_data()",
+      "sublabel": "功能图案与数据模块写入",
+      "tag": "49 × 49 矩阵",
+      "stage": 3,
+      "row": 2,
+      "width": 164
+    },
+    {
+      "id": "renderOutputs",
+      "type": "external",
+      "label": "PNG / SVG / ASCII",
+      "sublabel": "同一矩阵的三种呈现",
+      "tag": "C 域输出",
+      "stage": 4,
+      "row": 1,
+      "width": 164
+    }
+  ],
+  "flows": [
+    {
+      "id": "input-to-add-data",
+      "from": "urlInput",
+      "to": "addData",
+      "label": "原始 URL 字节",
+      "classification": "UTF-8",
+      "variant": "emphasis"
+    },
+    {
+      "id": "add-data-to-chunks",
+      "from": "addData",
+      "to": "dataChunks",
+      "label": "待编码数据",
+      "classification": "data_list",
+      "labelDy": 24
+    },
+    {
+      "id": "chunks-to-fit",
+      "from": "dataChunks",
+      "to": "bestFit",
+      "label": "模式与长度",
+      "classification": "needed bits",
+      "route": "top-channel"
+    },
+    {
+      "id": "fit-to-codewords",
+      "from": "bestFit",
+      "to": "codewords",
+      "label": "版本 8，M 级纠错",
+      "classification": "capacity",
+      "labelDy": 24
+    },
+    {
+      "id": "codewords-to-mask",
+      "from": "codewords",
+      "to": "maskScore",
+      "label": "纠错后的码字",
+      "classification": "RS output",
+      "variant": "emphasis"
+    },
+    {
+      "id": "mask-to-matrix",
+      "from": "maskScore",
+      "to": "matrix",
+      "label": "最低惩罚分掩码",
+      "classification": "mask 2",
+      "labelDy": 24
+    },
+    {
+      "id": "matrix-to-renderer",
+      "from": "matrix",
+      "to": "renderOutputs",
+      "label": "黑白模块矩阵",
+      "classification": "render"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "实际输入与结果",
+      "items": [
+        "输入为完整 Bilibili URL，共 129 个 UTF-8 字节",
+        "自动选择版本 8、M 级纠错与掩码 2",
+        "最终矩阵为 49 × 49，含静区输出为 57 × 57"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "测试对应点",
+      "items": [
+        "A 域检查编码、容量、RS 纠错与掩码评分",
+        "B 域检查版本选择、对象状态和矩阵生成",
+        "C 域检查 PNG、SVG 与终端输出是否忠实呈现矩阵"
+      ]
+    }
+  ]
+}

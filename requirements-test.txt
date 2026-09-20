@@ -1,5 +1,6 @@
 # Test tooling only. The python-qrcode source will be tracked separately.
 pytest>=8,<9
 pytest-cov>=6,<8
+pytest-html>=4,<5
 pillow>=9.1.0
 pypng

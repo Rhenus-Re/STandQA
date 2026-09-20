@@ -1,0 +1,72 @@
+<mxfile host="app.diagrams.net" modified="2026-09-14T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="qrcode-generation-flow" name="二维码生成流程">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="二维码生成流程：从输入到可渲染输出" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#1F2937;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="真实样例：HUST-STandQA-2026 · 17 UTF-8 bytes · Version 2 · M 级纠错 · mask 0" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=13;fontColor=#64748B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="62" width="1000" height="26" as="geometry" />
+        </mxCell>
+
+        <mxCell id="stage1" value="01 / 输入" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#38BDF8;fontColor=#075985;fontStyle=1;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="160" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="stage2" value="02 / 编码" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#38BDF8;fontColor=#075985;fontStyle=1;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="250" y="110" width="160" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="stage3" value="03 / 容量与纠错" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontColor=#92400E;fontStyle=1;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="460" y="110" width="180" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="stage4" value="04 / 矩阵" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE9FE;strokeColor=#8B5CF6;fontColor=#5B21B6;fontStyle=1;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="710" y="110" width="180" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="stage5" value="05 / 输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DCFCE7;strokeColor=#22C55E;fontColor=#166534;fontStyle=1;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="940" y="110" width="190" height="34" as="geometry" />
+        </mxCell>
+
+        <mxCell id="inputData" value="&lt;b&gt;输入数据&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;add_data()&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#0F172A'&gt;HUST-STandQA-2026&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;17 UTF-8 bytes&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#38BDF8;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="220" width="160" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="encodeData" value="&lt;b&gt;分析并编码&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;optimal_data_chunks()&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#0F172A'&gt;BYTE 模式&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;编码数据&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#38BDF8;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="250" y="220" width="160" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="chooseCapacity" value="&lt;b&gt;选择版本与容量&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;best_fit() / create_data()&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#0F172A'&gt;Version 2&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;M 级纠错&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#F59E0B;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="460" y="170" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="errorCorrection" value="&lt;b&gt;生成纠错码字&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;create_bytes() · RS&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#0F172A'&gt;44 个总码字&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;数据区 + 纠错区&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#F59E0B;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="460" y="360" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="matrix" value="&lt;b&gt;生成模块矩阵&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;makeImpl() · mask 0&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#0F172A'&gt;25 × 25 modules&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;格式信息 + 数据模块&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#8B5CF6;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="710" y="220" width="180" height="125" as="geometry" />
+        </mxCell>
+        <mxCell id="renderOutput" value="&lt;b&gt;渲染输出&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;make_image() / print_ascii()&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#0F172A'&gt;PNG · SVG · ASCII&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;同一模块矩阵&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#22C55E;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="940" y="220" width="190" height="125" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" value="UTF-8 字节" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0284C7;strokeWidth=2;endArrow=block;endFill=1;fontColor=#075985;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="inputData" target="encodeData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="编码数据" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0284C7;strokeWidth=2;endArrow=block;endFill=1;fontColor=#075985;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="encodeData" target="chooseCapacity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="数据区 + 纠错区" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D97706;strokeWidth=2;endArrow=block;endFill=1;fontColor=#92400E;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="chooseCapacity" target="errorCorrection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="44 个码字" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D97706;strokeWidth=2;endArrow=block;endFill=1;fontColor=#92400E;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="errorCorrection" target="matrix">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="25 × 25 模块矩阵" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7C3AED;strokeWidth=2;endArrow=block;endFill=1;fontColor=#5B21B6;fontSize=13;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="matrix" target="renderOutput">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="evidence" value="&lt;b&gt;可核验素材&lt;/b&gt;&lt;br&gt;trace.json：输入、版本、mask、码字、矩阵和输出文件&lt;br&gt;qr-chain：PNG / SVG / ASCII / matrix bits" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#334155;align=left;verticalAlign=middle;fontSize=13;spacingLeft=14;spacingRight=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="535" width="1090" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

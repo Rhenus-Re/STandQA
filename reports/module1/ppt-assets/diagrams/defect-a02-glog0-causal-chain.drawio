@@ -1,0 +1,87 @@
+<mxfile host="app.diagrams.net" modified="2026-09-14T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="defect-a02-glog0-causal-chain" name="A-02 缺陷因果链">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="A-02 缺陷因果链：零字节 RS 数据触发 glog(0)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=25;fontStyle=1;fontColor=#1F2937;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="1000" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="最小复现 → RS 分块 → glog(0) 根因 → 修复回归" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=15;fontColor=#64748B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="900" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="phaseRepro" value="复现" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#FCA5A5;fontColor=#991B1B;fontStyle=1;fontSize=14;align=left;verticalAlign=middle;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="330" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="phaseEncode" value="编码与 RS 分块" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#93C5FD;fontColor=#1E3A8A;fontStyle=1;fontSize=14;align=left;verticalAlign=middle;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="390" y="130" width="360" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="phaseFailure" value="异常与根因" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF1F2;strokeColor=#FDA4AF;fontColor=#9F1239;fontStyle=1;fontSize=14;align=left;verticalAlign=middle;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="770" y="130" width="330" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="phaseFix" value="修复与回归" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#86EFAC;fontColor=#166534;fontStyle=1;fontSize=14;align=left;verticalAlign=middle;spacingLeft=14;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="130" width="400" height="46" as="geometry" />
+        </mxCell>
+
+        <mxCell id="repro" value="&lt;b&gt;最小复现&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;Version 5 · Q 级纠错&lt;/font&gt;&lt;br&gt;&lt;font color='#991B1B'&gt;输入：28× 0x00&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;TC-A-10&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=2;fontColor=#991B1B;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="50" y="260" width="190" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="split" value="&lt;b&gt;RS 分块&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;4 个 Reed–Solomon 块&lt;/font&gt;&lt;br&gt;&lt;font color='#1E3A8A'&gt;数据长度：15 / 15 / 16 / 16&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;strokeWidth=2;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="300" y="260" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="zeroBlock" value="&lt;b&gt;零值数据块&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;某个数据块的多项式&lt;/font&gt;&lt;br&gt;&lt;font color='#1E3A8A'&gt;系数全为 0&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;仍是合法二进制输入&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;strokeWidth=2;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="570" y="260" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="glogError" value="&lt;b&gt;glog(0) 异常&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;有限域中 0 无对数&lt;/font&gt;&lt;br&gt;&lt;font color='#9F1239'&gt;修复前：ValueError&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;旧实现直接计算 glog(self[0])&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF1F2;strokeColor=#FB7185;strokeWidth=2;fontColor=#9F1239;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="840" y="260" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="patch" value="&lt;b&gt;修复 Polynomial.__mod__&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;消去零首项&lt;/font&gt;&lt;br&gt;&lt;font color='#166534'&gt;继续递归取余&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;提交：f4bcf02&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#22C55E;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="260" width="210" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="regression" value="&lt;b&gt;回归通过&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;make(fit=False) 成功&lt;/font&gt;&lt;br&gt;&lt;font color='#166534'&gt;134 个码字&lt;/font&gt;&lt;br&gt;&lt;font color='#64748B'&gt;Version 5-Q / TC-A-10&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#22C55E;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="260" width="170" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="expected" value="&lt;b&gt;正确语义&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;零值多项式应得到&lt;/font&gt;&lt;br&gt;&lt;font color='#92400E'&gt;零余数 + 零纠错字节&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#F59E0B;strokeWidth=2;fontColor=#92400E;align=center;verticalAlign=middle;fontSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="560" y="500" width="230" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="evidence" value="&lt;b&gt;缺陷证据&lt;/b&gt;&lt;br&gt;28 个零字节：修复前抛出 &lt;font color='#9F1239'&gt;ValueError: glog(0)&lt;/font&gt;&lt;br&gt;修复后：正常生成 Version 5 二维码，data_cache = 134" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#475569;align=left;verticalAlign=middle;fontSize=14;spacingLeft=16;spacingRight=16;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="690" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="source" value="&lt;b&gt;代码定位&lt;/b&gt;&lt;br&gt;qrcode/base.py::Polynomial.__mod__&lt;br&gt;&lt;font color='#64748B'&gt;修复提交 f4bcf02 · 回归用例 TC-A-10&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#BBF7D0;fontColor=#166534;align=left;verticalAlign=middle;fontSize=14;spacingLeft=16;spacingRight=16;" vertex="1" parent="1">
+          <mxGeometry x="770" y="720" width="790" height="86" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge1" value="输入并执行 make" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=1.6;endArrow=block;endFill=1;fontColor=#475569;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="repro" target="split">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="进入 RS 编码" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#60A5FA;strokeWidth=1.6;endArrow=block;endFill=1;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="split" target="zeroBlock">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="旧实现直接取 glog(self[0])" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FB7185;strokeWidth=1.8;endArrow=block;endFill=1;fontColor=#9F1239;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="zeroBlock" target="glogError">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="定位并修复" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#22C55E;strokeWidth=1.8;endArrow=block;endFill=1;fontColor=#166534;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="glogError" target="patch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="重新生成二维码" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#22C55E;strokeWidth=1.8;endArrow=block;endFill=1;fontColor=#166534;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="patch" target="regression">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="应满足" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#F59E0B;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#92400E;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="zeroBlock" target="expected">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" value="回归验证同一语义" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#F59E0B;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#92400E;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="expected" target="regression">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="820" y="650" />
+              <mxPoint x="1475" y="650" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
