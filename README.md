@@ -234,7 +234,11 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 
 > 课程规则要求模块一为人工完成。以上 C 分支材料是技术草稿；成员 C 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
 
-## 9. 质量与审查要求
+## 9. 模块二成员 A 交付索引
+
+成员 A 的模块二编码与纠错 AI 测试位于 `module2-ai-testing` 工作线。当前材料包括 15 条 AI 新用例、候选审核记录、覆盖率结果、测试报告、缺陷清单、人工与 AI 对比分析和反思，索引见 `reports/module2/README.md`。本阶段不包含成果汇报 PPT。
+
+## 10. 质量与审查要求
 
 - 用例必须具有明确需求依据和可验证的预期结果。
 - GitHub Issue、功能建议、正常抛出的异常不能直接视为有效缺陷。
@@ -243,7 +247,7 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 - 提交前检查仓库中不得包含 API 密钥、账号、个人敏感信息或未脱敏对话。
 - 报告中的个人贡献必须与 Git 提交记录一致。
 
-## 10. 上游项目与许可
+## 11. 上游项目与许可
 
 - 上游项目：[lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)
 - 固定测试标签：`v8.2`
