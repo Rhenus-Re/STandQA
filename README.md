@@ -236,7 +236,7 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 
 ## 9. 模块二成员 A 交付索引
 
-成员 A 的模块二编码与纠错 AI 测试位于 `module2-ai-testing` 工作线。当前材料包括 15 条 AI 新用例、候选审核记录、覆盖率结果、测试报告、缺陷清单、人工与 AI 对比分析和反思，索引见 `reports/module2/README.md`。本阶段不包含成果汇报 PPT。
+成员 A 的模块二编码与纠错 AI 测试位于 `module2-ai-testing` 工作线。当前材料包括 21 条 AI 新用例、候选审核记录、覆盖率结果、测试报告、缺陷清单、人工与 AI 对比分析和反思，索引见 `reports/module2/README.md`。本阶段不包含成果汇报 PPT。
 
 ## 10. 质量与审查要求
 

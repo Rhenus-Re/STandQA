@@ -6,7 +6,7 @@ ai_records/AI-2026-09-20-成员A-编码与纠错AI测-01.md。
 
 import pytest
 
-from qrcode import base, constants, exceptions, util
+from qrcode import QRCode, base, constants, exceptions, util
 
 
 def _bits(buffer):
@@ -167,3 +167,41 @@ def test_lost_point_level3_penalizes_finder_like_horizontal_pattern():
 def test_lost_point_level4_penalizes_all_dark_matrix():
     modules = [[True] * 10 for _ in range(10)]
     assert util._lost_point_level4(modules, 10) == 100
+
+
+# TC-A-AI-16 零分段阈值拒绝，避免零长度匹配循环（缺陷 M2-A-01 回归）
+def test_optimal_data_chunks_rejects_zero_minimum():
+    with pytest.raises(ValueError, match="positive integer"):
+        list(util.optimal_data_chunks(b"!", minimum=0))
+
+
+# TC-A-AI-17 负分段阈值拒绝（缺陷 M2-A-01 回归）
+def test_optimal_data_chunks_rejects_negative_minimum():
+    with pytest.raises(ValueError, match="positive integer"):
+        list(util.optimal_data_chunks(b"!", minimum=-1))
+
+
+# TC-A-AI-18 add_data 传入负 optimize 时给出明确错误（缺陷 M2-A-01 回归）
+def test_add_data_rejects_negative_optimize_before_regex_compilation():
+    qr = QRCode()
+    with pytest.raises(ValueError, match="positive integer"):
+        qr.add_data(b"!", optimize=-1)
+
+
+# TC-A-AI-19 最小有效阈值可完成字节模式分段（缺陷 M2-A-01 对照）
+def test_optimal_data_chunks_with_minimum_one_finishes_for_byte_input():
+    chunks = list(util.optimal_data_chunks(b"!", minimum=1))
+    assert [(chunk.mode, chunk.data) for chunk in chunks] == [(util.MODE_8BIT_BYTE, b"!")]
+
+
+# TC-A-AI-20 optimize=0 仍关闭分段优化（缺陷 M2-A-01 兼容性）
+def test_add_data_zero_optimize_preserves_existing_no_split_behavior():
+    qr = QRCode()
+    qr.add_data(b"!", optimize=0)
+    assert [(chunk.mode, chunk.data) for chunk in qr.data_list] == [(util.MODE_8BIT_BYTE, b"!")]
+
+
+# TC-A-AI-21 非整数分段阈值拒绝（缺陷 M2-A-01 边界）
+def test_optimal_data_chunks_rejects_noninteger_minimum():
+    with pytest.raises(ValueError, match="positive integer"):
+        list(util.optimal_data_chunks(b"!", minimum=1.5))
