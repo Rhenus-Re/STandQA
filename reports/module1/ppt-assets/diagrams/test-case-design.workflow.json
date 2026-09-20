@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "测试用例设计：风险域 × 设计方法",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "reports/module1/ppt-assets/diagrams/test-case-design.html"
+  },
+  "lanes": [
+    { "id": "domain_a", "label": "A 域：编码 / 纠错 / 掩码" },
+    { "id": "domain_b", "label": "B 域：对象状态 / 版本 / 矩阵" },
+    { "id": "domain_c", "label": "C 域：图像 / 文本 / CLI" }
+  ],
+  "phases": [
+    { "id": "boundary", "label": "边界值", "fromCol": 0, "toCol": 0, "variant": "emphasis" },
+    { "id": "equivalence", "label": "等价类", "fromCol": 1, "toCol": 1, "variant": "default" },
+    { "id": "scenario", "label": "场景法", "fromCol": 2, "toCol": 2, "variant": "default" },
+    { "id": "high_value", "label": "高价值组合", "fromCol": 3, "toCol": 4, "variant": "dashed" }
+  ],
+  "groups": [],
+  "nodes": [
+    { "id": "a_boundary", "lane": "domain_a", "col": 0, "type": "backend", "label": "空数据 / 零字节", "sublabel": "glog(0) 边界", "tag": "最小输入", "width": 150 },
+    { "id": "a_equivalence", "lane": "domain_a", "col": 1, "type": "backend", "label": "编码模式", "sublabel": "BYTE / 数字 / 中文", "tag": "等价类", "width": 150 },
+    { "id": "a_scenario", "lane": "domain_a", "col": 2, "type": "backend", "label": "编码到纠错", "sublabel": "码字与多项式链路", "tag": "场景法", "width": 160 },
+    { "id": "b_boundary", "lane": "domain_b", "col": 0, "type": "backend", "label": "版本边界", "sublabel": "Version 1 / 2", "tag": "容量边界", "width": 150 },
+    { "id": "b_equivalence", "lane": "domain_b", "col": 1, "type": "backend", "label": "对象状态", "sublabel": "新建 / 清空 / 复用", "tag": "状态等价类", "width": 160 },
+    { "id": "b_scenario", "lane": "domain_b", "col": 2, "type": "backend", "label": "版本切换", "sublabel": "缓存与矩阵一致性", "tag": "场景法", "width": 160 },
+    { "id": "c_boundary", "lane": "domain_c", "col": 0, "type": "external", "label": "边框 / 尺寸", "sublabel": "border=0 / 4", "tag": "输出边界", "width": 150 },
+    { "id": "c_equivalence", "lane": "domain_c", "col": 1, "type": "external", "label": "输出类型", "sublabel": "PNG / SVG / ASCII", "tag": "后端等价类", "width": 160 },
+    { "id": "c_scenario", "lane": "domain_c", "col": 2, "type": "external", "label": "CLI 与文件", "sublabel": "--output / --factory", "tag": "端到端场景", "width": 170 }
+  ],
+  "edges": [
+    { "id": "a_boundary_to_equivalence", "from": "a_boundary", "to": "a_equivalence", "label": "扩展输入类别", "role": "main", "variant": "emphasis" },
+    { "id": "a_equivalence_to_scenario", "from": "a_equivalence", "to": "a_scenario", "label": "组合链路", "role": "main", "variant": "default" },
+    { "id": "b_boundary_to_equivalence", "from": "b_boundary", "to": "b_equivalence", "label": "覆盖状态", "role": "main", "variant": "emphasis" },
+    { "id": "b_equivalence_to_scenario", "from": "b_equivalence", "to": "b_scenario", "label": "组合链路", "role": "main", "variant": "default" },
+    { "id": "c_boundary_to_equivalence", "from": "c_boundary", "to": "c_equivalence", "label": "扩展输出类", "role": "main", "variant": "emphasis" },
+    { "id": "c_equivalence_to_scenario", "from": "c_equivalence", "to": "c_scenario", "label": "端到端组合", "role": "main", "variant": "default" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "38 条用例的设计方法",
+      "items": [
+        "边界值：验证最小、最大和临界输入",
+        "等价类：覆盖有效、无效和不同输出后端",
+        "场景法：验证跨函数、跨对象和端到端链路"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "两组高价值组合",
+      "items": [
+        "版本 1 → 版本 2 → 新建版本 2：检查缓存与矩阵一致性",
+        "border=4 → print_tty()：检查输出宽度 46 → 58"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "二维码从输入到输出的生成流程",
+    "locale": "zh-CN",
+    "viewBox": [1080, 460],
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "hidden"
+    },
+    "output": "reports/module1/ppt-assets/diagrams/qrcode-generation-flow-ppt.html"
+  },
+  "stages": [
+    { "label": "01 / 输入数据" },
+    { "label": "02 / 分析并编码" },
+    { "label": "03 / 容量与纠错" },
+    { "label": "04 / 生成矩阵" },
+    { "label": "05 / 渲染输出" }
+  ],
+  "nodes": [
+    {
+      "id": "inputData",
+      "type": "external",
+      "label": "文本或 URL",
+      "sublabel": "QRCode.add_data()",
+      "tag": "示例：129 字节",
+      "stage": 0,
+      "row": 1,
+      "width": 120
+    },
+    {
+      "id": "encodeData",
+      "type": "backend",
+      "label": "分析并编码",
+      "sublabel": "optimal_data_chunks()",
+      "tag": "BYTE 模式",
+      "stage": 1,
+      "row": 1,
+      "width": 130
+    },
+    {
+      "id": "codewords",
+      "type": "backend",
+      "label": "容量与纠错",
+      "sublabel": "best_fit() / create_bytes()",
+      "tag": "V8 · M级 · 242码字",
+      "stage": 2,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "matrix",
+      "type": "backend",
+      "label": "掩码与矩阵",
+      "sublabel": "评分后写入模块",
+      "tag": "掩码 2 · 49 × 49",
+      "stage": 3,
+      "row": 1,
+      "width": 140
+    },
+    {
+      "id": "renderOutput",
+      "type": "external",
+      "label": "渲染二维码",
+      "sublabel": "PNG / SVG / ASCII",
+      "tag": "同一黑白模块矩阵",
+      "stage": 4,
+      "row": 1,
+      "width": 130
+    }
+  ],
+  "flows": [
+    {
+      "id": "inputToEncode",
+      "from": "inputData",
+      "to": "encodeData",
+      "label": "字节",
+      "classification": "输入",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": -23
+    },
+    {
+      "id": "encodeToCodewords",
+      "from": "encodeData",
+      "to": "codewords",
+      "label": "编码信息",
+      "classification": "编码",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": -23
+    },
+    {
+      "id": "codewordsToMatrix",
+      "from": "codewords",
+      "to": "matrix",
+      "label": "RS 码字",
+      "classification": "纠错后数据",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 76
+    },
+    {
+      "id": "matrixToOutput",
+      "from": "matrix",
+      "to": "renderOutput",
+      "label": "模块矩阵",
+      "classification": "渲染输入",
+      "variant": "emphasis",
+      "route": "straight",
+      "labelDy": 0
+    }
+  ]
+}

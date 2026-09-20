@@ -1,0 +1,153 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "A-02 缺陷因果链：零字节 RS 数据触发 glog(0)",
+    "locale": "zh-CN",
+    "animation": "none",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "cause-chain",
+        "label": "缺陷因果链",
+        "focus": ["repro", "split", "zero_block", "glog_error", "patch", "regression"],
+        "note": "从最小复现追踪到 RS 分块、有限域异常、修复与回归结果。"
+      },
+      {
+        "id": "expected-result",
+        "label": "预期语义",
+        "focus": ["zero_block", "zero_remainder", "regression"],
+        "note": "零值多项式应产生零余数和零纠错字节。"
+      }
+    ],
+    "viewBox": [1240, 700]
+  },
+  "lanes": [
+    { "id": "input", "label": "最小复现输入" },
+    { "id": "rs", "label": "RS 编码路径" },
+    { "id": "failure", "label": "失败与根因", "variant": "exception" },
+    { "id": "fix", "label": "修复与回归" }
+  ],
+  "phases": [
+    { "id": "reproduction", "label": "复现", "fromCol": 0, "toCol": 0 },
+    { "id": "encoding", "label": "编码与分块", "fromCol": 1, "toCol": 2, "variant": "emphasis" },
+    { "id": "failure_analysis", "label": "异常与根因", "fromCol": 3, "toCol": 3, "variant": "security" },
+    { "id": "repair_regression", "label": "修复与验证", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "trigger", "label": "触发条件", "lane": "input", "fromCol": 0, "toCol": 0, "variant": "emphasis" },
+    { "id": "old_implementation", "label": "旧实现的失败路径", "lane": "failure", "fromCol": 2, "toCol": 3, "variant": "security" },
+    { "id": "fixed_path", "label": "修复后的正确路径", "lane": "fix", "fromCol": 4, "toCol": 5, "variant": "emphasis" }
+  ],
+  "mainPath": ["repro", "split", "zero_block", "glog_error", "patch", "regression"],
+  "semanticChecks": {
+    "allowedRoots": ["repro"],
+    "allowedTerminals": ["regression"],
+    "requiredEdges": [
+      { "from": "repro", "to": "split" },
+      { "from": "split", "to": "zero_block" },
+      { "from": "zero_block", "to": "glog_error" },
+      { "from": "glog_error", "to": "patch" },
+      { "from": "patch", "to": "regression" }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "repro",
+      "lane": "input",
+      "col": 0,
+      "type": "external",
+      "label": "最小复现",
+      "sublabel": "v5-Q · 28× 0x00",
+      "tag": "TC-A-10",
+      "width": 168
+    },
+    {
+      "id": "split",
+      "lane": "rs",
+      "col": 1,
+      "type": "backend",
+      "label": "RS 分块",
+      "sublabel": "4 个块：15/15/16/16",
+      "tag": "Version 5 · Q",
+      "width": 168
+    },
+    {
+      "id": "zero_block",
+      "lane": "rs",
+      "col": 2,
+      "type": "backend",
+      "label": "零值数据块",
+      "sublabel": "多项式系数全为 0",
+      "tag": "合法二进制输入",
+      "width": 168
+    },
+    {
+      "id": "zero_remainder",
+      "lane": "rs",
+      "col": 3,
+      "type": "messagebus",
+      "label": "正确语义",
+      "sublabel": "零余数 · 零纠错字节",
+      "tag": "应有结果",
+      "width": 168
+    },
+    {
+      "id": "glog_error",
+      "lane": "failure",
+      "col": 3,
+      "type": "security",
+      "label": "glog(0) 异常",
+      "sublabel": "有限域中 0 无对数",
+      "tag": "修复前：ValueError",
+      "width": 168
+    },
+    {
+      "id": "patch",
+      "lane": "fix",
+      "col": 4,
+      "type": "backend",
+      "label": "修复 Polynomial.__mod__",
+      "sublabel": "跳过零首项，继续取余",
+      "tag": "f4bcf02",
+      "width": 168
+    },
+    {
+      "id": "regression",
+      "lane": "fix",
+      "col": 5,
+      "type": "database",
+      "label": "回归通过",
+      "sublabel": "make() 成功 · 134 个码字",
+      "tag": "TC-A-10",
+      "width": 168
+    }
+  ],
+  "edges": [
+    { "id": "input-to-rs", "from": "repro", "to": "split", "label": "add_data + make", "variant": "emphasis", "role": "main" },
+    { "id": "rs-to-zero", "from": "split", "to": "zero_block", "label": "进入 RS 多项式", "variant": "default", "role": "main" },
+    { "id": "zero-to-error", "from": "zero_block", "to": "glog_error", "label": "旧实现直接计算 glog(self[0])", "variant": "security", "role": "error" },
+    { "id": "zero-to-expected", "from": "zero_block", "to": "zero_remainder", "label": "正确处理应为", "variant": "dashed", "role": "branch" },
+    { "id": "error-to-patch", "from": "glog_error", "to": "patch", "label": "定位并修复取余逻辑", "variant": "emphasis", "role": "main" },
+    { "id": "expected-to-regression", "from": "zero_remainder", "to": "regression", "label": "验证相同语义", "variant": "dashed", "role": "return", "fromSide": "right", "toSide": "top" },
+    { "id": "patch-to-regression", "from": "patch", "to": "regression", "label": "重新生成二维码", "variant": "emphasis", "role": "main" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "缺陷证据",
+      "items": [
+        "28 个零字节在修复前触发 ValueError: glog(0)",
+        "根因位于 qrcode/base.py::Polynomial.__mod__"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "回归证据",
+      "items": [
+        "修复后版本 5-Q 正常生成二维码",
+        "data_cache 包含 134 个码字；TC-A-10 通过"
+      ]
+    }
+  ]
+}

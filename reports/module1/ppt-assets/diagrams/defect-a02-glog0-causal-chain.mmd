@@ -1,0 +1,26 @@
+flowchart LR
+    A["最小复现<br/>version=5 · Q 级纠错<br/><code>qr.add_data(b'\\x00' * 28)</code>"]
+    B["RS 分块<br/>某个数据块系数全部为 0"]
+    C["根因定位<br/><code>Polynomial.__mod__()</code><br/><b>glog(0) → ValueError</b>"]
+    D["修复方式<br/>零首项特殊处理<br/>继续多项式取余"]
+    E["回归结果<br/><b>134 个码字</b><br/>二维码正常生成"]
+
+    A -->|输入并执行 make| B
+    B -->|进入 Reed–Solomon 纠错| C
+    C -->|定位并修复| D
+    D -->|重新生成二维码| E
+
+    B -.-> F["正确语义<br/>零余数 + 零纠错字节"]
+    F -.->|回归验证| E
+
+    classDef repro fill:#FEF2F2,stroke:#EF4444,color:#991B1B,stroke-width:2px;
+    classDef encoding fill:#EFF6FF,stroke:#60A5FA,color:#1E3A8A,stroke-width:2px;
+    classDef failure fill:#FFF1F2,stroke:#FB7185,color:#9F1239,stroke-width:2px;
+    classDef fix fill:#F0FDF4,stroke:#22C55E,color:#166534,stroke-width:2px;
+    classDef expected fill:#FFFBEB,stroke:#F59E0B,color:#92400E,stroke-width:2px;
+
+    class A repro;
+    class B encoding;
+    class C failure;
+    class D,E fix;
+    class F expected;
