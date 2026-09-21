@@ -94,6 +94,8 @@ def main(args=None):
             image_factory = get_factory(module)
         except ValueError as e:
             raise_error(str(e))
+        except (ImportError, AttributeError) as e:
+            raise_error(f"Could not import the image factory {module}: {e}")
     else:
         image_factory = None
 
