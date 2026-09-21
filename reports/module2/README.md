@@ -22,6 +22,17 @@
 - `M2-成员A-AI反思.md`
 - `M2-成员A-编码与纠错-coverage.xml`
 
+AI 对话与审核记录：`ai_records/AI-2026-09-20-成员A-编码与纠错AI测-01.md`；测试实现：`tests/ai_generated/test_encoding_ecc_ai.py`。
+
+## 成员 B 对象与矩阵材料
+
+- `M1-成员B-对象与矩阵-模块二AI用例清单.xlsx`
+- `M1-成员B-对象与矩阵-模块二缺陷清单.docx`
+- `M1-成员B-对象与矩阵-模块二测试报告.docx`
+- `M1-成员B-对象与矩阵-模块二成果汇报.pptx`
+
+AI 对话与审核记录：`ai_records/AI-2026-09-11-成员B-对象与矩阵AI测-01.md`；测试实现：`tests/ai_generated/test_object_matrix_ai.py`。
+
 ## 成员 C 输出与命令行材料
 
 - `M2-成员C-输出与命令行-基线测试记录.md`
@@ -32,4 +43,10 @@
 - `M2-成员C-AI反思.md`
 - `M2-成员C-输出与命令行-coverage.xml`
 
-AI 对话与审核记录见 `ai_records/AI-2026-09-18-成员C-输出与命令行AI测-01.md`，AI 生成脚本见 `tests/ai_generated/test_output_cli_ai.py`。
+AI 对话与审核记录：`ai_records/AI-2026-09-18-成员C-输出与命令行AI测-01.md`；测试实现：`tests/ai_generated/test_output_cli_ai.py`。
+
+## 集成状态
+
+- AI 测试：37 条独立编号用例，参数化后 47 个 pytest 项。
+- 完整回归：模块一人工测试 42 项加模块二 AI 测试 47 项，共 89 项通过。
+- 已记录缺陷：M2-A-01、B-03、M2-C-01；最终课程提交前仍需补齐真实的交叉复现记录。
