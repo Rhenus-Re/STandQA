@@ -125,3 +125,77 @@ def test_tc_c_ai_03_svg_fragment_scenario():
     assert root.get("version") == "1.1"
     assert root.get("width") == "29mm"
     assert root.get("height") == "29mm"
+
+
+# ---------------------------------------------------------------------------
+# TC-C-AI-04 CLI 全后端矩阵（场景法）
+# ---------------------------------------------------------------------------
+def test_tc_c_ai_04_cli_all_factories_scenario(tmp_path, monkeypatch, capsys):
+    """TC-C-AI-04（场景法）：qr CLI 的 --factory 内置后端逐一产出生成物——
+    png（PyPNG 合法 PNG）、svg-fragment（无声明片段）、svg-path（独立 SVG 文档
+    且含单一 path）。模块一 TC-C-012 仅覆盖默认 pil 与 svg 两个后端。"""
+    # png 后端：PyPNG 输出合法 1 位灰度 PNG
+    png_path = tmp_path / "c-ai-04.png"
+    _cli(monkeypatch, capsys, ["--factory", "png", "--output", str(png_path), DATA])
+    reader = png.Reader(filename=str(png_path))
+    width, height, _, info = reader.read()
+    assert (width, height) == (290, 290)
+    assert info["greyscale"] and info["bitdepth"] == 1
+
+    # svg-fragment 后端：片段无 XML 声明
+    frag_path = tmp_path / "c-ai-04-fragment.svg"
+    _cli(monkeypatch, capsys, ["--factory", "svg-fragment", "--output", str(frag_path), DATA])
+    frag = frag_path.read_bytes()
+    assert not frag.startswith(b"<?xml")
+    assert ET.fromstring(frag).tag == "{http://www.w3.org/2000/svg}svg"
+
+    # svg-path 后端：独立文档、单一 path 元素
+    path_path = tmp_path / "c-ai-04-path.svg"
+    _cli(monkeypatch, capsys, ["--factory", "svg-path", "--output", str(path_path), DATA])
+    raw = path_path.read_bytes()
+    assert raw.startswith(b"<?xml")
+    paths = [e for e in ET.fromstring(raw).iter() if e.tag.endswith("path")]
+    assert len(paths) == 1 and paths[0].get("fill") == "#000000"
+
+
+# ---------------------------------------------------------------------------
+# TC-C-AI-05 CLI --error-correction 值域（等价类）
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("level", ["L", "M", "Q", "H"])
+def test_tc_c_ai_05_cli_error_correction_levels(level, tmp_path, monkeypatch, capsys):
+    """TC-C-AI-05（等价类）：CLI --error-correction 的 L/M/Q/H 全部合法级别
+    均产出可被 PIL 重开的合法 PNG；非法级别走 optparse choice 校验，
+    以 SystemExit 2 友好退出（作为 CLI 参数校验的对照基线，模块一未覆盖）。"""
+    out = tmp_path / f"c-ai-05-{level}.png"
+    _cli(monkeypatch, capsys, ["--error-correction", level, "--output", str(out), DATA])
+    with Image.open(out) as im:
+        assert im.format == "PNG"
+        assert im.size == (290, 290)
+
+
+def test_tc_c_ai_05_cli_error_correction_invalid(tmp_path, monkeypatch, capsys):
+    """TC-C-AI-05 补充：非法纠错级别 X 的 CLI 友好错误（SystemExit 2）。"""
+    with pytest.raises(SystemExit) as exc:
+        _cli(monkeypatch, capsys, ["--error-correction", "X", "--output", str(tmp_path / "x.png"), DATA])
+    assert exc.value.code == 2
+    assert "invalid choice" in capsys.readouterr().err
+
+
+# ---------------------------------------------------------------------------
+# TC-C-AI-06 print_ascii 静区奇偶边界（边界值）
+# ---------------------------------------------------------------------------
+@pytest.mark.parametrize("border,expected_lines", [(1, 12), (2, 13), (3, 14)])
+def test_tc_c_ai_06_print_ascii_quiet_zone_parity(border, expected_lines):
+    """TC-C-AI-06（边界值）：print_ascii 行数 = ceil((modcount+2*border)/2)、
+    每行可见字符数 = modcount+2*border，奇偶静区（border=1/2/3）均成立。
+    模块一 TC-C-009 仅覆盖 border=0、TC-C-012 仅覆盖默认 border=4。"""
+    qr = qrcode.QRCode(version=1, box_size=1, border=border)
+    qr.add_data(DATA)
+    qr.make()
+
+    out = io.StringIO()
+    qr.print_ascii(out=out)
+    lines = out.getvalue().splitlines()
+
+    assert len(lines) == expected_lines == math.ceil((qr.modules_count + 2 * border) / 2)
+    assert all(len(l) == qr.modules_count + 2 * border for l in lines)
