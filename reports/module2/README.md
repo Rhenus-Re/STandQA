@@ -21,3 +21,15 @@
 - `M2-成员A-人工与AI测试对比分析.md`
 - `M2-成员A-AI反思.md`
 - `M2-成员A-编码与纠错-coverage.xml`
+
+## 成员 C 输出与命令行材料
+
+- `M2-成员C-输出与命令行-基线测试记录.md`
+- `M2-成员C-输出与命令行-AI测试用例清单.md`
+- `M2-成员C-输出与命令行-AI测试报告.md`
+- `M2-成员C-输出与命令行-缺陷清单.md`
+- `M2-成员C-人工与AI测试对比分析.md`
+- `M2-成员C-AI反思.md`
+- `M2-成员C-输出与命令行-coverage.xml`
+
+AI 对话与审核记录见 `ai_records/AI-2026-09-18-成员C-输出与命令行AI测-01.md`，AI 生成脚本见 `tests/ai_generated/test_output_cli_ai.py`。
