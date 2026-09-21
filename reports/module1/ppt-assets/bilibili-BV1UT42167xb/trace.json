@@ -1,0 +1,40 @@
+{
+  "purpose": "模块一成果汇报PPT：二维码生成风险链路的可复查素材",
+  "input": {
+    "text": "https://www.bilibili.com/video/BV1UT42167xb/?spm_id_from=333.337.search-card.all.click&vd_source=b9c708ab84f8ceb98f14f4d1bf5f3ad7",
+    "character_length": 129,
+    "utf8_byte_length": 129,
+    "utf8_hex": "68 74 74 70 73 3A 2F 2F 77 77 77 2E 62 69 6C 69 62 69 6C 69 2E 63 6F 6D 2F 76 69 64 65 6F 2F 42 56 31 55 54 34 32 31 36 37 78 62 2F 3F 73 70 6D 5F 69 64 5F 66 72 6F 6D 3D 33 33 33 2E 33 33 37 2E 73 65 61 72 63 68 2D 63 61 72 64 2E 61 6C 6C 2E 63 6C 69 63 6B 26 76 64 5F 73 6F 75 72 63 65 3D 62 39 63 37 30 38 61 62 38 34 66 38 63 65 62 39 38 66 31 34 66 34 64 31 62 66 35 66 33 61 64 37"
+  },
+  "encoding": {
+    "chunks": [
+      {
+        "mode": "BYTE",
+        "utf8_text": "https://www.bilibili.com/video/BV1UT42167xb/?spm_id_from=333.337.search-card.all.click&vd_source=b9c708ab84f8ceb98f14f4d1bf5f3ad7",
+        "byte_length": 129,
+        "hex": "68 74 74 70 73 3A 2F 2F 77 77 77 2E 62 69 6C 69 62 69 6C 69 2E 63 6F 6D 2F 76 69 64 65 6F 2F 42 56 31 55 54 34 32 31 36 37 78 62 2F 3F 73 70 6D 5F 69 64 5F 66 72 6F 6D 3D 33 33 33 2E 33 33 37 2E 73 65 61 72 63 68 2D 63 61 72 64 2E 61 6C 6C 2E 63 6C 69 63 6B 26 76 64 5F 73 6F 75 72 63 65 3D 62 39 63 37 30 38 61 62 38 34 66 38 63 65 62 39 38 66 31 34 66 34 64 31 62 66 35 66 33 61 64 37"
+      }
+    ],
+    "error_correction": "M",
+    "selected_version": 8,
+    "selected_mask_pattern": 2,
+    "final_codeword_count": 242,
+    "final_codewords_hex": "48 43 26 86 16 23 42 63 87 13 E6 13 47 63 16 46 47 77 C6 63 07 86 C2 46 33 22 E6 43 A2 F3 36 16 F2 F7 C6 26 F7 37 96 63 77 06 36 56 77 D5 B2 63 72 F6 67 36 E6 96 66 16 26 45 45 43 96 F6 F7 70 C6 67 36 EC 96 26 F7 11 26 F6 57 EC 96 D3 26 11 C6 D3 36 EC 92 33 53 11 E6 33 D6 EC 36 32 23 11 F6 E3 96 EC D2 33 33 11 F7 33 73 EC 66 72 03 11 96 E7 86 EC 46 36 16 11 56 56 23 EC F2 17 83 11 F4 26 46 EC 25 36 63 11 63 82 86 EC 15 D6 36 11 55 36 56 EC 43 17 23 11 93 EC AA 7B 7D 87 D0 B1 B8 9D D5 93 41 E6 F7 98 AA 7F F0 DB 8A B3 CD EA B1 A0 CE 25 79 C8 07 DE E2 37 3B 95 06 76 0D 51 C3 F4 9B 66 C9 86 2C B1 A5 A6 26 3A D1 C3 B2 55 15 EA 26 8C AC F2 D5 73 0C 42 DE 87 7F 0A 0B 3E 7A A1 1B DD 97 96 2B 9D AB 83 F7 F0 4D D5 22 90 A6 8D"
+  },
+  "matrix": {
+    "modules_per_side": 49,
+    "matrix_without_border_file": "01-matrix-bits.txt",
+    "matrix_without_border_sha256": "0e18b6a9a68f546139bfe0c9b0cda72e70648c5d7a90b866944a1ccb7e5eb059",
+    "matrix_with_border_side": 57
+  },
+  "outputs": {
+    "matrix_png": "02-matrix.png",
+    "png": "03-output-png.png",
+    "svg": "04-output-svg.svg",
+    "ascii": "05-output-ascii.txt"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "source": "当前仓库中的 qrcode 代码"
+  }
+}

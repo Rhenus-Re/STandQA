@@ -38,3 +38,8 @@ tmp/
 temp/
 *.tmp
 *.log
+
+# Local PPT authoring workspaces and editor recovery files
+.ppt_build_notes/
+projects/
+reports/module1/ppt-assets/diagrams/.$*.dtmp

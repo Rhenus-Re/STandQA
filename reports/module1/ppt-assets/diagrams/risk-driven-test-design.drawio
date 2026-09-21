@@ -1,0 +1,89 @@
+<mxfile host="app.diagrams.net" modified="2026-09-14T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="risk-driven-test-design" name="风险驱动的测试设计">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="风险驱动的测试设计" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=25;fontStyle=1;fontColor=#1F2937;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="800" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="测试域沿二维码生成链路展开：算法正确性 → 对象与矩阵一致性 → 输出可用性" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#64748B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="68" width="1000" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="stageInput" value="输入数据" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=2;fontColor=#0F172A;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="140" width="170" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="stageEncode" value="编码" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#3B82F6;strokeWidth=2;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="140" width="170" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="stageEcc" value="容量 / 纠错" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#F97316;strokeWidth=2;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="140" width="170" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="stageMatrix" value="版本 / 矩阵" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F3FF;strokeColor=#8B5CF6;strokeWidth=2;fontColor=#5B21B6;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="670" y="140" width="170" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="stageOutput" value="PNG / SVG / ASCII / CLI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#22C55E;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="140" width="220" height="72" as="geometry" />
+        </mxCell>
+
+        <mxCell id="main1" value="数据" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#475569;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="stageInput" target="stageEncode">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="main2" value="编码信息" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#475569;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="stageEncode" target="stageEcc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="main3" value="纠错码字" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#475569;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="stageEcc" target="stageMatrix">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="main4" value="模块矩阵" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=2;endArrow=block;endFill=1;fontColor=#475569;fontSize=12;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="stageMatrix" target="stageOutput">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneA" value="A 域 · 编码 / 纠错 / 掩码算法" style="swimlane;html=1;rounded=1;horizontal=0;startSize=36;fillColor=#EFF6FF;swimlaneFillColor=#DBEAFE;strokeColor=#60A5FA;fontColor=#1E3A8A;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="280" width="1060" height="116" as="geometry" />
+        </mxCell>
+        <mxCell id="aEncode" value="编码模式&lt;br&gt;&lt;font color='#64748B'&gt;BYTE / 数据分段&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneA">
+          <mxGeometry x="220" y="46" width="170" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="aEcc" value="RS 纠错&lt;br&gt;&lt;font color='#64748B'&gt;码字 / 多项式&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneA">
+          <mxGeometry x="430" y="46" width="170" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="aMask" value="掩码算法&lt;br&gt;&lt;font color='#64748B'&gt;评分 / 选择&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneA">
+          <mxGeometry x="640" y="46" width="170" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneB" value="B 域 · 对象状态 / 版本 / 矩阵" style="swimlane;html=1;rounded=1;horizontal=0;startSize=36;fillColor=#FFF7ED;swimlaneFillColor=#FFEDD5;strokeColor=#FB923C;fontColor=#9A3412;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="420" width="1060" height="116" as="geometry" />
+        </mxCell>
+        <mxCell id="bState" value="对象状态&lt;br&gt;&lt;font color='#64748B'&gt;add / clear / reuse&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneB">
+          <mxGeometry x="220" y="46" width="170" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="bVersion" value="版本切换&lt;br&gt;&lt;font color='#64748B'&gt;容量 / 缓存一致性&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneB">
+          <mxGeometry x="430" y="46" width="170" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="bMatrix" value="矩阵结果&lt;br&gt;&lt;font color='#64748B'&gt;尺寸 / 内容一致性&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneB">
+          <mxGeometry x="640" y="46" width="170" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneC" value="C 域 · 图像 / 文本 / 命令行输出" style="swimlane;html=1;rounded=1;horizontal=0;startSize=36;fillColor=#F0FDF4;swimlaneFillColor=#DCFCE7;strokeColor=#4ADE80;fontColor=#166534;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="560" width="1060" height="116" as="geometry" />
+        </mxCell>
+        <mxCell id="cImage" value="&lt;b&gt;图像输出&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;PNG / PyPNG / SVG&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneC">
+          <mxGeometry x="220" y="46" width="240" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="cTerminal" value="&lt;b&gt;终端输出&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;ASCII / TTY · border=4：46 → 58&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneC">
+          <mxGeometry x="480" y="46" width="240" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="cCli" value="&lt;b&gt;CLI 与文件&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;--output / --factory / 流与路径&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneC">
+          <mxGeometry x="740" y="46" width="260" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="riskFooter" value="风险重点：算法正确性 · 状态一致性 · 输出可用性" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#475569;align=center;verticalAlign=middle;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="1060" height="46" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

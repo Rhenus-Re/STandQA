@@ -1,0 +1,108 @@
+<mxfile host="app.diagrams.net" modified="2026-09-14T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="test-case-design-generation" name="测试用例生成链路">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="测试用例生成链路" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=25;fontStyle=1;fontColor=#1F2937;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="800" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="风险线索 → 选择测试设计方法 → 构造输入条件 → 定义预期断言 → 汇总测试用例" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontColor=#64748B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="68" width="1100" height="28" as="geometry" />
+        </mxCell>
+
+        <mxCell id="risk" value="&lt;b&gt;风险线索&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;算法 / 状态 / 输出&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#991B1B'&gt;待验证风险&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF2F2;strokeColor=#EF4444;strokeWidth=2;fontColor=#991B1B;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="330" width="180" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneBoundary" value="边界值分支" style="swimlane;html=1;rounded=1;horizontal=0;startSize=34;fillColor=#EFF6FF;swimlaneFillColor=#DBEAFE;strokeColor=#60A5FA;fontColor=#1E3A8A;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="270" y="140" width="700" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="boundaryMethod" value="&lt;b&gt;边界值&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;最小 / 临界 / 最大&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneBoundary">
+          <mxGeometry x="160" y="42" width="150" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="boundaryCondition" value="0 bytes · V1/2&lt;br&gt;&lt;font color='#64748B'&gt;border 0/4&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneBoundary">
+          <mxGeometry x="350" y="42" width="170" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="boundaryOracle" value="&lt;b&gt;预期断言&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;不异常 / 尺寸正确 / 宽度正确&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#60A5FA;fontColor=#1E3A8A;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneBoundary">
+          <mxGeometry x="560" y="42" width="200" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneEquiv" value="等价类分支" style="swimlane;html=1;rounded=1;horizontal=0;startSize=34;fillColor=#F0FDF4;swimlaneFillColor=#DCFCE7;strokeColor=#4ADE80;fontColor=#166534;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="270" y="300" width="700" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="equivMethod" value="&lt;b&gt;等价类&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;有效 / 无效 / 后端分类&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneEquiv">
+          <mxGeometry x="160" y="42" width="150" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="equivCondition" value="BYTE / 数字 / 中文&lt;br&gt;&lt;font color='#64748B'&gt;PNG / SVG / ASCII&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneEquiv">
+          <mxGeometry x="350" y="42" width="190" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="equivOracle" value="&lt;b&gt;预期断言&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;格式 / 回读 / 分支一致&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#4ADE80;fontColor=#166534;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneEquiv">
+          <mxGeometry x="560" y="42" width="200" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneScenario" value="场景法分支" style="swimlane;html=1;rounded=1;horizontal=0;startSize=34;fillColor=#FFF7ED;swimlaneFillColor=#FFEDD5;strokeColor=#FB923C;fontColor=#9A3412;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="270" y="460" width="700" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="scenarioMethod" value="&lt;b&gt;场景法&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;跨函数 / 跨对象 / 端到端&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneScenario">
+          <mxGeometry x="160" y="42" width="150" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="scenarioCondition" value="版本切换 · make→save&lt;br&gt;&lt;font color='#64748B'&gt;CLI 端到端&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneScenario">
+          <mxGeometry x="350" y="42" width="190" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="scenarioOracle" value="&lt;b&gt;预期断言&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;链路完成 / 状态一致 / 有证据&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#FB923C;fontColor=#9A3412;align=center;verticalAlign=middle;fontSize=13;" vertex="1" parent="laneScenario">
+          <mxGeometry x="560" y="42" width="200" height="58" as="geometry" />
+        </mxCell>
+
+        <mxCell id="corpus" value="&lt;b&gt;38 条测试用例&lt;/b&gt;&lt;br&gt;&lt;font color='#64748B'&gt;输入条件 + 执行路径 + 预期断言&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;font color='#166534'&gt;形成可执行、可回归的测试资产&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDF4;strokeColor=#22C55E;strokeWidth=2;fontColor=#166534;align=center;verticalAlign=middle;fontSize=15;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="310" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="highValue" value="&lt;b&gt;两组高价值组合&lt;/b&gt;&lt;br&gt;&lt;br&gt;① Version 1 → Version 2 → 新建 Version 2&lt;br&gt;缓存与矩阵一致性&lt;br&gt;&lt;br&gt;② border=4 → print_tty()&lt;br&gt;输出宽度 46 → 58" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFBEB;strokeColor=#F59E0B;strokeWidth=2;fontColor=#92400E;align=left;verticalAlign=top;fontSize=14;spacingTop=14;spacingLeft=14;spacingRight=14;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="490" width="230" height="190" as="geometry" />
+        </mxCell>
+
+        <mxCell id="riskBoundary" value="选择边界" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#EF4444;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#991B1B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="risk" target="boundaryMethod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="riskEquiv" value="选择等价类" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#EF4444;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#991B1B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="risk" target="equivMethod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="riskScenario" value="选择场景" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#EF4444;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#991B1B;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="risk" target="scenarioMethod">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary1" value="定义边界" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#60A5FA;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneBoundary" source="boundaryMethod" target="boundaryCondition">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="boundary2" value="绑定断言" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#60A5FA;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#1E3A8A;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneBoundary" source="boundaryCondition" target="boundaryOracle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="equiv1" value="划分集合" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4ADE80;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#166534;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneEquiv" source="equivMethod" target="equivCondition">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="equiv2" value="绑定断言" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4ADE80;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#166534;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneEquiv" source="equivCondition" target="equivOracle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="scenario1" value="编排步骤" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FB923C;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#9A3412;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneScenario" source="scenarioMethod" target="scenarioCondition">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="scenario2" value="绑定断言" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FB923C;strokeWidth=1.5;endArrow=block;endFill=1;fontColor=#9A3412;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="laneScenario" source="scenarioCondition" target="scenarioOracle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="toCorpusA" value="归档用例" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#475569;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="boundaryOracle" target="corpus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="toCorpusB" value="归档用例" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#475569;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="equivOracle" target="corpus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="toCorpusC" value="归档用例" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#64748B;strokeWidth=1.5;dashed=1;endArrow=block;endFill=1;fontColor=#475569;fontSize=11;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="scenarioOracle" target="corpus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="footer" value="每条用例都必须回答：输入什么？执行什么？预期看到什么？" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontColor=#475569;align=center;verticalAlign=middle;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="730" width="1230" height="48" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

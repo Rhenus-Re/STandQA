@@ -1,0 +1,40 @@
+{
+  "purpose": "模块一成果汇报PPT：二维码生成风险链路的可复查素材",
+  "input": {
+    "text": "HUST-STandQA-2026",
+    "character_length": 17,
+    "utf8_byte_length": 17,
+    "utf8_hex": "48 55 53 54 2D 53 54 61 6E 64 51 41 2D 32 30 32 36"
+  },
+  "encoding": {
+    "chunks": [
+      {
+        "mode": "BYTE",
+        "utf8_text": "HUST-STandQA-2026",
+        "byte_length": 17,
+        "hex": "48 55 53 54 2D 53 54 61 6E 64 51 41 2D 32 30 32 36"
+      }
+    ],
+    "error_correction": "M",
+    "selected_version": 2,
+    "selected_mask_pattern": 0,
+    "final_codeword_count": 44,
+    "final_codewords_hex": "41 14 85 55 35 42 D5 35 46 16 E6 45 14 12 D3 23 03 23 60 EC 11 EC 11 EC 11 EC 11 EC F8 A4 EA 7F 22 0C E1 E1 0E F2 4B 5C 55 48 31 9B"
+  },
+  "matrix": {
+    "modules_per_side": 25,
+    "matrix_without_border_file": "01-matrix-bits.txt",
+    "matrix_without_border_sha256": "57d78dfd955dd02d927884b4436bc706fe0483e1e73d5bbcb47a386eb7d2186b",
+    "matrix_with_border_side": 33
+  },
+  "outputs": {
+    "matrix_png": "02-matrix.png",
+    "png": "03-output-png.png",
+    "svg": "04-output-svg.svg",
+    "ascii": "05-output-ascii.txt"
+  },
+  "environment": {
+    "python": "3.12.14",
+    "source": "当前仓库中的 qrcode 代码"
+  }
+}

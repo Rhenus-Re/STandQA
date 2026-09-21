@@ -2,7 +2,7 @@
 
 本仓库用于华中科技大学软件学院《软件测试与质量保证实践》小组作业。被测对象选定为 [lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)，计划固定在 `8.2` 版本开展测试。
 
-> 已引入 `python-qrcode v8.2` 被测源码；课程测试用例和测试脚本尚未加入。
+> 已引入 `python-qrcode v8.2` 被测源码。`module1-integration` 分支汇总成员 A（编码与纠错）、成员 B（对象与矩阵）、成员 C（输出与命令行）三个测试域的用例、缺陷修复与证据材料；`main` 历史不在该分支上改写。
 
 ## 1. 项目目标
 
@@ -43,11 +43,14 @@ STandQA/
 │   └── LICENSE                     # 上游 BSD-3-Clause 许可证
 ├── tests/
 │   ├── manual/                     # 模块一：人工设计的自动化测试
-│   │   └── README.md
+│   │   ├── test_encoding_ecc.py     # A：编码与纠错（待 A 独立审阅）
+│   │   ├── test_object_matrix.py    # B：对象与矩阵基线测试
+│   │   └── test_output_cli.py       # C：输出与命令行（待 C 独立审阅）
 │   └── ai_generated/               # 模块二：AI生成且经人工审核的测试
 │       └── README.md
 ├── testdata/
 │   ├── manual/                     # 模块一人工准备的数据
+│   │   ├── M1-输出与命令行-01~05   # C：输入数据、CLI参数集与期望输出基线
 │   │   └── README.md
 │   └── ai_generated/               # 模块二AI生成且经审核的数据
 │       └── README.md
@@ -107,12 +110,16 @@ STandQA/
 
 ## 6. 分支与版本规则
 
-- `main`：可展示、可提交的稳定成果。
-- `module1-work`：模块一集成分支。
-- `module2-ai-testing`：模块二 AI 测试分支，只能在 `module1-final` 之后创建。
-- `member-a/*`、`member-b/*`、`member-c/*`：成员个人工作分支。
+- `main`：唯一稳定主线，仅保留已确认、可展示的成果。
+- `module1-integration`：模块一集成与交付分支，汇总 A、B、C 三个测试域的代码、证据材料、PPT 和演示视频。
+- `module2-ai-testing`：模块二 AI 测试与交付分支，只能在 `module1-final` 之后创建。
+- `module1-work`：模块一历史工作分支；其内容已并入 `module1-integration`，不再用于日常开发。
+- `archive/member-a-encoding`、`archive/member-c-output`：成员 A、C 的只读历史归档分支，保留原始提交记录以便追溯，不再继续提交。
+- 不再保留重复的 `member-b/module1` 和 `member-b/module2` 分支；其内容分别由 `module1-work` 和 `module2-ai-testing` 承接。
 - `module1-final`：模块一提交快照标签。
 - `module2-final`：模块二最终提交快照标签。
+
+本地 PPT 制作工作区、转换项目目录和绘图软件临时恢复文件均由 `.gitignore` 屏蔽；仓库只提交最终交付的 PPT、报告、图表、素材和可复现的生成脚本。
 
 推荐提交信息：
 
@@ -154,9 +161,84 @@ python -m pytest tests/manual
 python -m pytest tests/ai_generated
 ```
 
-当前仓库已包含被测源码，但尚无课程测试代码，因此以上测试入口将在后续阶段启用。
+实际验证环境（成员 A 分支）：
 
-## 8. 质量与审查要求
+- Python 3.12.14
+- pytest 8.4.2，pytest-cov 7.1.0
+- Pillow 12.3.0，PyPNG 0.20220715.0
+
+一键执行全部当前测试：
+
+```powershell
+python -m pytest
+```
+
+成员 A 的编码与纠错测试：
+
+```powershell
+python -m pytest tests/manual/test_encoding_ecc.py
+```
+
+成员 C 的输出与命令行测试：
+
+```powershell
+python -m pytest tests/manual/test_output_cli.py
+```
+
+成员 A 的覆盖率命令：
+
+```powershell
+python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-report=xml
+```
+
+修复 A-01、A-02、A-03、B-04 与 B-05 后，A 域测试为 13 个 pytest 项通过（对应 `TC-A-01` 至 `TC-A-12`，其中 TC-A-09 参数化 2 项），B 域测试为 17 项通过；修复 C-01（print_tty 静区）、C-BUG-01（PyPNG 文件句柄泄漏）与 C-BUG-02（PyPNG kind 未校验）后，C 域测试为 12 项通过（对应 `TC-C-001` 至 `TC-C-012`）。三域合并执行 42 项全部通过，合并总覆盖率 73%，其中 `util.py` 98%、`image/pure.py` 97%、`main.py` 93%、`image/base.py` 93%、`image/svg.py` 93%、`image/pil.py` 85%、`console_scripts.py` 74%；`coverage.xml` 为可再生输出，不提交至仓库。
+
+## 8. 成员 A 贡献索引（归档：`archive/member-a-encoding`）
+
+| 项目 | 位置 | 状态 |
+|---|---|---|
+| 编码与纠错测试 | `tests/manual/test_encoding_ecc.py` | 12 个编号用例，待成员 A 独立审阅确认 |
+| A-01、A-02、A-03 回归与修复 | `qrcode/base.py`、`qrcode/main.py`、`qrcode/util.py` | 已完成本地回归；待成员 C 实际交叉复现 |
+| 测试用例清单 | `reports/module1/M1-成员A-编码与纠错-测试用例清单.xlsx` | 已生成 |
+| 缺陷清单 | `reports/module1/M1-成员A-编码与纠错-缺陷清单.docx` | 已生成；C 复现栏待填写 |
+| 最新缺陷补充 | `reports/module1/M1-编码与纠错-缺陷补充记录.md` | 记录 A-02、A-03 的复现、修复与回归 |
+| 测试报告 | `reports/module1/M1-成员A-编码与纠错-测试报告.docx` | 已生成；人工审核待完成 |
+
+> 课程规则要求模块一为人工完成。以上 A 分支材料是技术草稿；成员 A 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
+
+## 8.1 成员 B 贡献索引
+
+| 项目 | 位置 | 状态 |
+|---|---|---|
+| 对象与矩阵测试 | `tests/manual/test_object_matrix.py` | 17 个 pytest 项通过（TC-B-01~12，含参数化） |
+| B 域缺陷修复 | `qrcode/main.py`（clear/get_matrix/error_correction） | 已完成本地回归；待成员 A 实际交叉复现 |
+| 测试用例清单 | `reports/module1/M1-成员B-对象与矩阵-测试用例清单.xlsx` | 已生成 |
+| 缺陷清单 | `reports/module1/M1-成员B-对象与矩阵-缺陷清单.docx` | 已生成 |
+| 测试报告 | `reports/module1/M1-成员B-对象与矩阵-测试报告.docx` | 已生成 |
+| 成果汇报 | `reports/module1/M1-成员B-对象与矩阵-成果汇报.pptx` | 已生成 |
+
+## 8.2 成员 C 贡献索引（归档：`archive/member-c-output`）
+
+| 项目 | 位置 | 状态 |
+|---|---|---|
+| 输出与命令行测试 | `tests/manual/test_output_cli.py` | 12 个编号用例（TC-C-001~012），待成员 C 独立审阅确认 |
+| C-01 回归与修复 | `qrcode/main.py`（print_tty 静区遵循 self.border） | 已完成本地回归；待成员 B 实际交叉复现 |
+| C-BUG-01/02 回归与修复 | `qrcode/image/pure.py`（kind 校验、文件句柄关闭） | 已完成本地回归；待成员 B 实际交叉复现 |
+| 人工测试数据 | `testdata/manual/M1-输出与命令行-01~05` | 已生成；期望输出基线由固定参数确定性生成 |
+| 需求分析与用例设计 | `reports/module1/member-c-requirements-output-cli.md`、`member-c-testcases-output-cli.md` | 已生成 |
+| 缺陷记录 | `reports/module1/member-c-defects-output-cli.md` | 已生成；B 复现栏待填写 |
+| 测试用例清单 | `reports/module1/M1-成员C-输出与命令行域-测试用例清单.xlsx` | 已生成 |
+| 缺陷清单 | `reports/module1/M1-成员C-输出与命令行域-缺陷清单.docx` | 已生成；B 复现栏待填写 |
+| 测试报告 | `reports/module1/M1-成员C-输出与命令行域-测试报告.docx` | 已生成；人工审核待完成 |
+| 成果汇报 | `reports/module1/M1-成员C-输出与命令行域-成果汇报.pptx` | 已生成 |
+
+> 课程规则要求模块一为人工完成。以上 C 分支材料是技术草稿；成员 C 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
+
+## 9. 模块二成员 A 交付索引
+
+成员 A 的模块二编码与纠错 AI 测试位于 `module2-ai-testing` 工作线。当前材料包括 21 条 AI 新用例、候选审核记录、覆盖率结果、测试报告、缺陷清单、人工与 AI 对比分析和反思，索引见 `reports/module2/README.md`。本阶段不包含成果汇报 PPT。
+
+## 10. 质量与审查要求
 
 - 用例必须具有明确需求依据和可验证的预期结果。
 - GitHub Issue、功能建议、正常抛出的异常不能直接视为有效缺陷。
@@ -165,7 +247,7 @@ python -m pytest tests/ai_generated
 - 提交前检查仓库中不得包含 API 密钥、账号、个人敏感信息或未脱敏对话。
 - 报告中的个人贡献必须与 Git 提交记录一致。
 
-## 9. 上游项目与许可
+## 11. 上游项目与许可
 
 - 上游项目：[lincolnloop/python-qrcode](https://github.com/lincolnloop/python-qrcode)
 - 固定测试标签：`v8.2`

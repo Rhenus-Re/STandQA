@@ -135,6 +135,7 @@ def BCH_digit(data):
 
 
 def pattern_position(version):
+    check_version(version)
     return PATTERN_POSITION_TABLE[version - 1]
 
 
@@ -357,6 +358,9 @@ def optimal_data_chunks(data, minimum=4):
 
     :param minimum: The minimum number of bytes in a row to split as a chunk.
     """
+    if not isinstance(minimum, int) or minimum < 1:
+        raise ValueError("minimum must be a positive integer")
+
     data = to_bytestring(data)
     num_pattern = rb"\d"
     alpha_pattern = b"[" + re.escape(ALPHA_NUM) + b"]"

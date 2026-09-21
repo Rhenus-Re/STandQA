@@ -119,6 +119,10 @@ class QRCode(Generic[GenericImage]):
         if value is not None:
             value = int(value)
             util.check_version(value)
+        # 缺陷 B-05 修复：编码缓存依赖版本的容量和纠错块配置；显式
+        # 切换版本后必须重新计算，否则新矩阵会映射旧版本的码字。
+        if value != self._version:
+            self.data_cache = None
         self._version = value
 
     @property
@@ -236,11 +240,12 @@ class QRCode(Generic[GenericImage]):
             data.write(buffer)
 
         needed_bits = len(buffer)
-        self.version = bisect_left(
+        version = bisect_left(
             util.BIT_LIMIT_TABLE[self.error_correction], needed_bits, start
         )
-        if self.version == 41:
+        if version == 41:
             raise exceptions.DataOverflowError()
+        self.version = version
 
         # Now check whether we need more bits for the mode sizes, recursing if
         # our guess was too low
@@ -256,7 +261,8 @@ class QRCode(Generic[GenericImage]):
         pattern = 0
 
         for i in range(8):
-            self.makeImpl(True, i)
+            # A-03：评分必须包含真实的格式/版本信息和固定深色模块。
+            self.makeImpl(False, i)
 
             lost_point = util.lost_point(self.modules)
 
@@ -284,16 +290,26 @@ class QRCode(Generic[GenericImage]):
             self.make()
 
         modcount = self.modules_count
-        out.write("\x1b[1;47m" + (" " * (modcount * 2 + 4)) + "\x1b[0m\n")
+        # Each module is rendered as 2 visible chars; the quiet zone is
+        # self.border modules wide on every side, so each side contributes
+        # self.border * 2 chars. Using self.border (instead of a hardcoded
+        # 1-module zone) keeps print_tty consistent with print_ascii and the
+        # QR spec's minimum quiet-zone requirement.
+        quiet_zone = self.border * 2
+        out.write(
+            "\x1b[1;47m" + (" " * (modcount * 2 + quiet_zone * 2)) + "\x1b[0m\n"
+        )
         for r in range(modcount):
-            out.write("\x1b[1;47m  \x1b[40m")
+            out.write("\x1b[1;47m" + (" " * quiet_zone) + "\x1b[40m")
             for c in range(modcount):
                 if self.modules[r][c]:
                     out.write("  ")
                 else:
                     out.write("\x1b[1;47m  \x1b[40m")
-            out.write("\x1b[1;47m  \x1b[0m\n")
-        out.write("\x1b[1;47m" + (" " * (modcount * 2 + 4)) + "\x1b[0m\n")
+            out.write("\x1b[1;47m" + (" " * quiet_zone) + "\x1b[0m\n")
+        out.write(
+            "\x1b[1;47m" + (" " * (modcount * 2 + quiet_zone * 2)) + "\x1b[0m\n"
+        )
         out.flush()
 
     def print_ascii(self, out=None, tty=False, invert=False):

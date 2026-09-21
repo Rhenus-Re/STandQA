@@ -1,0 +1,72 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "测试用例生成链路",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "reports/module1/ppt-assets/diagrams/test-case-design-generation.html"
+  },
+  "lanes": [
+    { "id": "source", "label": "风险线索" },
+    { "id": "boundary", "label": "边界值分支" },
+    { "id": "equivalence", "label": "等价类分支" },
+    { "id": "scenario", "label": "场景法分支" },
+    { "id": "outcome", "label": "用例与证据" }
+  ],
+  "phases": [
+    { "id": "risk", "label": "风险线索", "fromCol": 0, "toCol": 0, "variant": "security" },
+    { "id": "method", "label": "选择方法", "fromCol": 1, "toCol": 1, "variant": "emphasis" },
+    { "id": "condition", "label": "构造条件", "fromCol": 2, "toCol": 2, "variant": "default" },
+    { "id": "oracle", "label": "定义断言", "fromCol": 3, "toCol": 3, "variant": "default" },
+    { "id": "collection", "label": "汇总结果", "fromCol": 4, "toCol": 4, "variant": "dashed" }
+  ],
+  "groups": [],
+  "nodes": [
+    { "id": "risk_hint", "lane": "source", "col": 0, "type": "security", "label": "风险线索", "sublabel": "算法 / 状态 / 输出", "tag": "待验证风险", "width": 170 },
+    { "id": "boundary_method", "lane": "boundary", "col": 1, "type": "backend", "label": "边界值", "sublabel": "最小 / 临界 / 最大", "tag": "选择方法", "width": 160 },
+    { "id": "boundary_condition", "lane": "boundary", "col": 2, "type": "backend", "label": "构造输入条件", "sublabel": "0 bytes · V1/2 · border 0/4", "tag": "边界集合", "width": 190 },
+    { "id": "boundary_oracle", "lane": "boundary", "col": 3, "type": "database", "label": "预期断言", "sublabel": "不异常 / 尺寸正确 / 宽度正确", "tag": "可观测结果", "width": 200 },
+    { "id": "equivalence_method", "lane": "equivalence", "col": 1, "type": "backend", "label": "等价类", "sublabel": "有效 / 无效 / 后端分类", "tag": "选择方法", "width": 160 },
+    { "id": "equivalence_condition", "lane": "equivalence", "col": 2, "type": "backend", "label": "构造输入条件", "sublabel": "BYTE/数字/中文 · PNG/SVG/ASCII", "tag": "等价类集合", "width": 210 },
+    { "id": "equivalence_oracle", "lane": "equivalence", "col": 3, "type": "database", "label": "预期断言", "sublabel": "输出格式 / 文件可读 / 分支一致", "tag": "可观测结果", "width": 200 },
+    { "id": "scenario_method", "lane": "scenario", "col": 1, "type": "backend", "label": "场景法", "sublabel": "跨函数 / 跨对象 / 端到端", "tag": "选择方法", "width": 170 },
+    { "id": "scenario_condition", "lane": "scenario", "col": 2, "type": "backend", "label": "构造执行路径", "sublabel": "版本切换 · make→save · CLI", "tag": "场景步骤", "width": 200 },
+    { "id": "scenario_oracle", "lane": "scenario", "col": 3, "type": "database", "label": "预期断言", "sublabel": "链路完成 / 状态一致 / 证据留存", "tag": "可观测结果", "width": 200 },
+    { "id": "case_corpus", "lane": "outcome", "col": 4, "type": "external", "label": "38 条测试用例", "sublabel": "输入条件 + 执行路径 + 预期断言", "tag": "测试资产", "width": 210 }
+  ],
+  "edges": [
+    { "id": "risk_to_boundary", "from": "risk_hint", "to": "boundary_method", "label": "选择边界", "role": "branch", "variant": "security" },
+    { "id": "risk_to_equivalence", "from": "risk_hint", "to": "equivalence_method", "label": "选择等价类", "role": "branch", "variant": "security" },
+    { "id": "risk_to_scenario", "from": "risk_hint", "to": "scenario_method", "label": "选择场景", "role": "branch", "variant": "security" },
+    { "id": "boundary_path_1", "from": "boundary_method", "to": "boundary_condition", "label": "定义边界", "role": "main", "variant": "emphasis" },
+    { "id": "boundary_path_2", "from": "boundary_condition", "to": "boundary_oracle", "label": "绑定断言", "role": "main", "variant": "default" },
+    { "id": "equivalence_path_1", "from": "equivalence_method", "to": "equivalence_condition", "label": "划分集合", "role": "main", "variant": "emphasis" },
+    { "id": "equivalence_path_2", "from": "equivalence_condition", "to": "equivalence_oracle", "label": "绑定断言", "role": "main", "variant": "default" },
+    { "id": "scenario_path_1", "from": "scenario_method", "to": "scenario_condition", "label": "编排步骤", "role": "main", "variant": "emphasis" },
+    { "id": "scenario_path_2", "from": "scenario_condition", "to": "scenario_oracle", "label": "绑定断言", "role": "main", "variant": "default" },
+    { "id": "boundary_to_corpus", "from": "boundary_oracle", "to": "case_corpus", "label": "归档用例", "role": "branch", "variant": "dashed" },
+    { "id": "equivalence_to_corpus", "from": "equivalence_oracle", "to": "case_corpus", "label": "归档用例", "role": "branch", "variant": "dashed" },
+    { "id": "scenario_to_corpus", "from": "scenario_oracle", "to": "case_corpus", "label": "归档用例", "role": "branch", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "用例生成规则",
+      "items": [
+        "每条用例都包含输入条件、执行路径和预期断言",
+        "边界值关注临界行为，等价类关注代表性覆盖",
+        "场景法关注跨函数、跨对象和端到端链路"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "高价值组合",
+      "items": [
+        "Version 1 → Version 2 → 新建 Version 2：缓存与矩阵一致性",
+        "border=4 → print_tty()：输出宽度 46 → 58"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "风险驱动的测试设计",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "animation": "none",
+    "output": "reports/module1/ppt-assets/diagrams/risk-driven-test-design.html"
+  },
+  "lanes": [
+    { "id": "generation", "label": "二维码生成链路" },
+    { "id": "domain_a", "label": "A 域：编码 / 纠错 / 掩码" },
+    { "id": "domain_b", "label": "B 域：对象状态 / 版本 / 矩阵" },
+    { "id": "domain_c", "label": "C 域：图像 / 文本 / CLI" }
+  ],
+  "phases": [
+    { "id": "main_flow", "label": "生成主链路", "fromCol": 0, "toCol": 4, "variant": "emphasis" }
+  ],
+  "groups": [
+    { "id": "c_output_group", "label": "C 域输出验证 · 三类输出契约", "lane": "domain_c", "fromCol": 2, "toCol": 4, "variant": "emphasis" }
+  ],
+  "mainPath": ["input", "encode", "ecc", "matrix", "output"],
+  "nodes": [
+    { "id": "input", "lane": "generation", "col": 0, "type": "external", "label": "输入数据", "sublabel": "文本 / URL", "tag": "HUST-STandQA-2026", "width": 150 },
+    { "id": "encode", "lane": "generation", "col": 1, "type": "backend", "label": "编码", "sublabel": "BYTE / 数据分段", "width": 150 },
+    { "id": "ecc", "lane": "generation", "col": 2, "type": "backend", "label": "容量 / 纠错", "sublabel": "版本 / RS 码字", "width": 150 },
+    { "id": "matrix", "lane": "generation", "col": 3, "type": "backend", "label": "版本 / 矩阵", "sublabel": "掩码 / 模块矩阵", "width": 150 },
+    { "id": "output", "lane": "generation", "col": 4, "type": "external", "label": "输出", "sublabel": "PNG / SVG / ASCII / CLI", "width": 180 },
+    { "id": "a_encode", "lane": "domain_a", "col": 1, "type": "backend", "label": "编码边界", "sublabel": "模式与数据分段", "tag": "算法风险", "width": 150 },
+    { "id": "a_ecc", "lane": "domain_a", "col": 2, "type": "backend", "label": "RS 纠错", "sublabel": "码字 / 多项式", "tag": "算法风险", "width": 150 },
+    { "id": "a_mask", "lane": "domain_a", "col": 3, "type": "backend", "label": "掩码评分", "sublabel": "规则与最优选择", "tag": "算法风险", "width": 150 },
+    { "id": "b_state", "lane": "domain_b", "col": 1, "type": "backend", "label": "对象状态", "sublabel": "add / clear / reuse", "tag": "状态风险", "width": 150 },
+    { "id": "b_version", "lane": "domain_b", "col": 2, "type": "backend", "label": "版本切换", "sublabel": "容量 / 缓存一致性", "tag": "状态风险", "width": 150 },
+    { "id": "b_matrix", "lane": "domain_b", "col": 3, "type": "backend", "label": "矩阵一致性", "sublabel": "尺寸 / 内容", "tag": "状态风险", "width": 150 },
+    { "id": "c_image", "lane": "domain_c", "col": 2, "type": "external", "label": "图像输出", "sublabel": "PNG / PyPNG / SVG", "tag": "尺寸 / 颜色 / 回读", "width": 170 },
+    { "id": "c_terminal", "lane": "domain_c", "col": 3, "type": "external", "label": "终端输出", "sublabel": "ASCII / TTY", "tag": "border 4：46 → 58", "width": 170 },
+    { "id": "c_cli", "lane": "domain_c", "col": 4, "type": "external", "label": "CLI 与文件", "sublabel": "--output / --factory", "tag": "流 / 路径", "width": 180 }
+  ],
+  "edges": [
+    { "id": "input_encode", "from": "input", "to": "encode", "label": "数据", "role": "main", "variant": "emphasis" },
+    { "id": "encode_ecc", "from": "encode", "to": "ecc", "label": "编码信息", "role": "main", "variant": "emphasis" },
+    { "id": "ecc_matrix", "from": "ecc", "to": "matrix", "label": "纠错码字", "role": "main", "variant": "emphasis" },
+    { "id": "matrix_output", "from": "matrix", "to": "output", "label": "模块矩阵", "role": "main", "variant": "emphasis" },
+    { "id": "a_chain_1", "from": "a_encode", "to": "a_ecc", "label": "算法覆盖", "role": "branch", "variant": "dashed" },
+    { "id": "a_chain_2", "from": "a_ecc", "to": "a_mask", "label": "算法覆盖", "role": "branch", "variant": "dashed" },
+    { "id": "b_chain_1", "from": "b_state", "to": "b_version", "label": "状态覆盖", "role": "branch", "variant": "dashed" },
+    { "id": "b_chain_2", "from": "b_version", "to": "b_matrix", "label": "状态覆盖", "role": "branch", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "测试域对应关系",
+      "items": [
+        "A 域验证算法内部结果",
+        "B 域验证对象状态与矩阵一致性",
+        "C 域验证最终输出是否可用"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "风险优先级",
+      "items": [
+        "算法正确性",
+        "状态一致性",
+        "输出可用性"
+      ]
+    }
+  ]
+}
