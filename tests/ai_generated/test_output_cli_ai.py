@@ -199,3 +199,79 @@ def test_tc_c_ai_06_print_ascii_quiet_zone_parity(border, expected_lines):
 
     assert len(lines) == expected_lines == math.ceil((qr.modules_count + 2 * border) / 2)
     assert all(len(l) == qr.modules_count + 2 * border for l in lines)
+
+
+# ---------------------------------------------------------------------------
+# TC-C-AI-07 print_ascii tty ANSI 契约（场景法）
+# ---------------------------------------------------------------------------
+def test_tc_c_ai_07_print_ascii_tty_ansi_scenario():
+    """TC-C-AI-07（场景法）：print_ascii(tty=True) 在真实可写终端上输出
+    ANSI 着色行——强制 invert（静区渲染为实心块）；每行含前景码 38;5;255
+    并以 \x1b[0m 结束；背景码 48;5;232 仅出现在非末行（末行 r=modcount+border-1
+    时不写背景码，为源码显式分支）；可见行宽与普通输出一致。模块一仅覆盖
+    tty 守卫异常（TC-C-010）与 print_tty 宽度（TC-C-011），未断言 ANSI 内容。"""
+    qr = qrcode.QRCode(version=1, box_size=1, border=4)
+    qr.add_data(DATA)
+    qr.make()
+
+    ft = _FakeTty()
+    qr.print_ascii(out=ft, tty=True)
+    tty_out = "".join(ft.buf)
+    tty_lines = tty_out.splitlines()
+
+    plain = io.StringIO()
+    qr.print_ascii(out=plain)
+    plain_lines = plain.getvalue().splitlines()
+
+    # 行数与可见宽度与普通输出一致
+    assert len(tty_lines) == len(plain_lines) == 15
+    visible = [_ANSI.sub("", l) for l in tty_lines]
+    assert all(len(v) == qr.modules_count + 2 * qr.border for v in visible)
+
+    # tty 强制 invert：静区渲染为实心块，与普通输出的静区字符不同
+    assert visible[0][0] != plain_lines[0][0]
+
+    for i, line in enumerate(tty_lines):
+        assert line.endswith("\x1b[0m"), f"第 {i} 行缺少 ANSI 重置码"
+        assert "\x1b[38;5;255m" in line, f"第 {i} 行缺少前景色码"
+        if i < len(tty_lines) - 1:
+            assert "\x1b[48;5;232m" in line, f"第 {i} 行缺少背景色码"
+        else:
+            assert "\x1b[48;5;232m" not in line, "末行不应包含背景色码"
+
+
+# ---------------------------------------------------------------------------
+# TC-C-AI-08 CLI --factory 无效值处理（等价类，缺陷 M2-C-01 回归）
+# ---------------------------------------------------------------------------
+def test_tc_c_ai_08_cli_factory_invalid_handling(tmp_path, monkeypatch, capsys):
+    """TC-C-AI-08（等价类，M2-C-01 回归）：--factory 无效输入必须统一走
+    optparse 友好错误（SystemExit 2 + 说明信息），与 --error-correction 的
+    choice 校验行为一致。
+
+    修复前：合法快捷键正常；无点非法值友好退出；但带点非法路径抛出未捕获的
+    ModuleNotFoundError（pil.PilImage）或 AttributeError（qrcode.image.pil.NoSuchImage）
+    原始 traceback。修复后三类输入均为 SystemExit 2。
+    """
+    # 合法快捷键：正常生成（默认 pil 后端）
+    ok_path = tmp_path / "c-ai-08-ok.png"
+    _cli(monkeypatch, capsys, ["--factory", "pil", "--output", str(ok_path), DATA])
+    with Image.open(ok_path) as im:
+        assert im.format == "PNG"
+
+    # 无点非法值：not a full python path
+    with pytest.raises(SystemExit) as exc:
+        _cli(monkeypatch, capsys, ["--factory", "foo", DATA])
+    assert exc.value.code == 2
+    assert "not a full python path" in capsys.readouterr().err
+
+    # 带点非法模块：ModuleNotFoundError 场景（修复前为原始 traceback）
+    with pytest.raises(SystemExit) as exc:
+        _cli(monkeypatch, capsys, ["--factory", "pil.PilImage", DATA])
+    assert exc.value.code == 2
+    assert "Could not import" in capsys.readouterr().err
+
+    # 带点非法类名：AttributeError 场景（修复前为原始 traceback）
+    with pytest.raises(SystemExit) as exc:
+        _cli(monkeypatch, capsys, ["--factory", "qrcode.image.pil.NoSuchImage", DATA])
+    assert exc.value.code == 2
+    assert "Could not import" in capsys.readouterr().err
