@@ -102,6 +102,14 @@ STandQA/
 
 三个测试域不得重复设计同一功能点。跨文件调用的用例按“主要断言对象”归属：验证编码、纠错或掩码评分结果归 A；验证 `QRCode` 对象状态、掩码选择或矩阵结果归 B；验证最终图像、文本、文件或 CLI 输出归 C。每名成员在自己的测试域内人工设计并实现 12 条用例、至少负责 1 个有效缺陷，并完成对应证据材料。缺陷交叉复现顺序为：A 发现的缺陷由 C 复现，B 发现的缺陷由 A 复现，C 发现的缺陷由 B 复现。
 
+Git 提交历史中的成员署名如下。成员 C 使用过两种署名，查找其提交时需同时检索；这些是 Git 记录中的署名，不代表已核实的 GitHub 登录名。
+
+| 成员 | Git 提交署名 |
+|---|---|
+| A | `Rhenus` |
+| B | `ENDERANDHUSTER` |
+| C | `zs_无定风波`、`wudingfengbo99` |
+
 为控制模块一规模，暂不测试 `image/styledpil.py`、`image/styles/*`、`release.py` 及发布流程。
 
 公共事务也分别指定主责：A 负责测试环境、覆盖率汇总、README和仓库整合；B 负责缺陷清单、根因分析和测试报告相关章节；C 负责用例清单、PPT和演示视频整合。每位成员须使用个人账号提交，任何成员不得代替他人提交。
@@ -199,10 +207,11 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 |---|---|---|
 | 编码与纠错测试 | `tests/manual/test_encoding_ecc.py` | 12 个编号用例，待成员 A 独立审阅确认 |
 | A-01、A-02、A-03 回归与修复 | `qrcode/base.py`、`qrcode/main.py`、`qrcode/util.py` | 已完成本地回归；待成员 C 实际交叉复现 |
-| 测试用例清单 | `reports/module1/M1-成员A-编码与纠错-测试用例清单.xlsx` | 已生成 |
-| 缺陷清单 | `reports/module1/M1-成员A-编码与纠错-缺陷清单.docx` | 已生成；C 复现栏待填写 |
+| 测试用例清单 | `reports/module1/M1-成员A-编码与纠错-测试用例清单.xlsx` | 编码与纠错用例 |
+| 缺陷清单 | `reports/module1/M1-成员A-编码与纠错-缺陷清单.docx` | C 复现栏待填写 |
 | 最新缺陷补充 | `reports/module1/M1-编码与纠错-缺陷补充记录.md` | 记录 A-02、A-03 的复现、修复与回归 |
-| 测试报告 | `reports/module1/M1-成员A-编码与纠错-测试报告.docx` | 已生成；人工审核待完成 |
+| 测试报告 | `reports/module1/M1-成员A-编码与纠错-测试报告.docx` | 人工审核待完成 |
+| 个人实验报告 | `reports/module1/M1-成员A-个人实验报告.docx`、同名 `.pdf` | 模块一、模块二个人实验报告 |
 
 > 课程规则要求模块一为人工完成。以上 A 分支材料是技术草稿；成员 A 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
 
@@ -212,10 +221,10 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 |---|---|---|
 | 对象与矩阵测试 | `tests/manual/test_object_matrix.py` | 17 个 pytest 项通过（TC-B-01~12，含参数化） |
 | B 域缺陷修复 | `qrcode/main.py`（clear/get_matrix/error_correction） | 已完成本地回归；待成员 A 实际交叉复现 |
-| 测试用例清单 | `reports/module1/M1-成员B-对象与矩阵-测试用例清单.xlsx` | 已生成 |
-| 缺陷清单 | `reports/module1/M1-成员B-对象与矩阵-缺陷清单.docx` | 已生成 |
-| 测试报告 | `reports/module1/M1-成员B-对象与矩阵-测试报告.docx` | 已生成 |
-| 成果汇报 | `reports/module1/M1-成员B-对象与矩阵-成果汇报.pptx` | 已生成 |
+| 测试用例清单 | `reports/module1/M1-成员B-对象与矩阵-测试用例清单.xlsx` | 对象与矩阵用例 |
+| 缺陷清单 | `reports/module1/M1-成员B-对象与矩阵-缺陷清单.docx` | B 域缺陷记录 |
+| 测试报告 | `reports/module1/M1-成员B-对象与矩阵-测试报告.docx` | B 域测试结果 |
+| 成果汇报 | `reports/module1/M1-成员B-对象与矩阵-成果汇报.pptx` | B 域汇报材料 |
 
 ## 8.2 成员 C 贡献索引（归档：`archive/member-c-output`）
 
@@ -224,13 +233,13 @@ python -m pytest --cov=qrcode --cov-branch --cov-report=term-missing --cov-repor
 | 输出与命令行测试 | `tests/manual/test_output_cli.py` | 12 个编号用例（TC-C-001~012），待成员 C 独立审阅确认 |
 | C-01 回归与修复 | `qrcode/main.py`（print_tty 静区遵循 self.border） | 已完成本地回归；待成员 B 实际交叉复现 |
 | C-BUG-01/02 回归与修复 | `qrcode/image/pure.py`（kind 校验、文件句柄关闭） | 已完成本地回归；待成员 B 实际交叉复现 |
-| 人工测试数据 | `testdata/manual/M1-输出与命令行-01~05` | 已生成；期望输出基线由固定参数确定性生成 |
-| 需求分析与用例设计 | `reports/module1/member-c-requirements-output-cli.md`、`member-c-testcases-output-cli.md` | 已生成 |
-| 缺陷记录 | `reports/module1/member-c-defects-output-cli.md` | 已生成；B 复现栏待填写 |
-| 测试用例清单 | `reports/module1/M1-成员C-输出与命令行域-测试用例清单.xlsx` | 已生成 |
-| 缺陷清单 | `reports/module1/M1-成员C-输出与命令行域-缺陷清单.docx` | 已生成；B 复现栏待填写 |
-| 测试报告 | `reports/module1/M1-成员C-输出与命令行域-测试报告.docx` | 已生成；人工审核待完成 |
-| 成果汇报 | `reports/module1/M1-成员C-输出与命令行域-成果汇报.pptx` | 已生成 |
+| 人工测试数据 | `testdata/manual/M1-输出与命令行-01~05` | 固定参数下的期望输出基线 |
+| 需求分析与用例设计 | `reports/module1/member-c-requirements-output-cli.md`、`member-c-testcases-output-cli.md` | 需求与用例设计记录 |
+| 缺陷记录 | `reports/module1/member-c-defects-output-cli.md` | B 复现栏待填写 |
+| 测试用例清单 | `reports/module1/M1-成员C-输出与命令行域-测试用例清单.xlsx` | 输出与命令行用例 |
+| 缺陷清单 | `reports/module1/M1-成员C-输出与命令行域-缺陷清单.docx` | B 复现栏待填写 |
+| 测试报告 | `reports/module1/M1-成员C-输出与命令行域-测试报告.docx` | 人工审核待完成 |
+| 成果汇报 | `reports/module1/M1-成员C-输出与命令行域-成果汇报.pptx` | C 域汇报材料 |
 
 > 课程规则要求模块一为人工完成。以上 C 分支材料是技术草稿；成员 C 必须独立审阅、重写并对测试设计、代码和报告签署确认后，才能作为模块一人工成果提交。
 
